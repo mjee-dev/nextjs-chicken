@@ -1,21 +1,34 @@
 'use client';
 
-import React from "react";
+import React, { useState } from "react";
 
-function write() {
+export default function Write() {
+    const [data, setData] = useState('');
+    const [response, setResponse] = useState('');
+
+    const sendData = async () => {
+        try {
+            const res = await fetch('/api/write', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data }),
+            });
+    
+            const result = await res.json();
+            setResponse(result.message);
+        } catch (error) {
+            console.error(`Error Data : ${error}`);
+            setResponse(`Error sending data`);
+        }
+    };
+
     return (
         <div className="w-80">
-            <form
-                action="/server/api/post/new"
-                method="post"
-                style={{display: 'flex', flexDirection: 'column'}}
-            >
-            <input name="title" placeholder="제목"></input>
-            <textarea name="content" placeholder="내용"></textarea>
-            <button type="submit">제출</button>
-            </form>
+            <input type="text" className="input input-bordered w-full max-w-xs" value={data} onChange={(e) => setData(e.target.value)}/>
+            <button className="btn" onClick={sendData}>제출</button>
+            <p>Response: {response}</p>
         </div>
     );
 }
-
-export default write;
