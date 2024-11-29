@@ -16,7 +16,7 @@ function Login() {
         setShowPassword(!showPassword);
     };
 
-    const isLoginVaild: boolean = false;
+    const isLoginVaild: boolean = true; //TODO: 체크
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target) return;
@@ -36,11 +36,32 @@ function Login() {
         e.preventDefault();
         // 로그인 처리
         console.log(formData);
-      };
+        sendData();
+    };
+
+    const [response, setResponse] = useState('');
+    const sendData = async () => {
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ formData }),
+            });
+    
+            const result = await res.json();
+            
+            setResponse(result.message);
+            console.log(`response : ${response}`);
+        } catch (error) {
+            console.error(`Error : ${error}`);
+            setResponse(`Error sending data`);
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit}>
-
             <div className="w-80" style={{border: '1px solid #eee'}}>
                 <div>로고 영역?</div>
                 <label className="input input-bordered flex items-center gap-2 my-2">{/* 이메일 */}
@@ -54,7 +75,7 @@ function Login() {
                         <path
                         d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                     </svg>
-                    <input type="text" className="grow" placeholder="이메일을 입력해주세요." />
+                    <input type="text" className="grow" name="email" value={formData.email} onChange={handleChange} placeholder="이메일을 입력해주세요." />
                 </label>
                 <label className="input input-bordered flex items-center gap-2 my-2">{/* 아이디 */}
                     <svg
@@ -65,7 +86,7 @@ function Login() {
                         <path
                         d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                     </svg>
-                    <input type="text" className="grow" placeholder="아이디를 입력해주세요." />
+                    <input type="text" className="grow" name="username" value={formData.username} onChange={handleChange} placeholder="아이디를 입력해주세요." />
                 </label>
                 <label className="input input-bordered flex items-center gap-2 my-2">{/* 비밀번호 */}
                     <svg
@@ -81,6 +102,8 @@ function Login() {
                     <input
                         type={showPassword ? 'text' : 'password'}
                         className="grow"
+                        name="password"
+                        value={formData.password}
                         placeholder="비밀번호를 입력해주세요."
                         onChange={handleChange}
                     />
@@ -88,7 +111,9 @@ function Login() {
                         {showPassword ? '👁️' : '👁‍🗨'}
                     </span>
                 </label>
-                <button type="submit" className={isLoginVaild ? 'btn my-6 ylw w-full' : 'btn my-6 ylw w-full btn-disabled'}>로그인</button>
+                <button type="submit" className={isLoginVaild ? 'btn my-6 ylw w-full' : 'btn my-6 ylw w-full btn-disabled'}>
+                    로그인
+                </button>
 
                 {/* 간편 로그인 네이버 카카오톡 구글 */}
                 <button className="btn btn-outline btn-success w-full my-1">Naver 로그인</button>

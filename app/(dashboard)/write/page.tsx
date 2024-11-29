@@ -26,7 +26,7 @@ export default function Write() {
 
     return (
         <div className="w-80">
-            <input type="text" className="input input-bordered w-full max-w-xs" value={data} onChange={(e) => setData(e.target.value)}/>
+            <input type="text" className="input input-bordered w-full max-w-xs" name="title" value={data} onChange={(e) => setData(e.target.value)}/>
             <button className="btn" onClick={sendData}>제출</button>
             <p>Response: {response}</p>
         </div>
