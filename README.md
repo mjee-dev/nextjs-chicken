@@ -37,3 +37,37 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## mje memo
 npm run format 명령으로 프로젝트 전체를 자동으로 포맷팅 할 수 있음 (pritter 플러그인 기능)
+
+## Link컴포넌트
+Link 컴포넌트는 Next.js의 내장 컴포넌트로 클라이언트 사이드 라우팅을 제공합니다.
+<Link>의 href 속성에는 URL 경로를 작성하며, 이는 pages 폴더의 파일 구조와 매핑됩니다.
+내부 링크에는 <Link>를 사용하여 성능을 최적화하세요.
+
+## 라우트 규칙
+- pages 폴더 규칙
+pages 폴더 안의 파일과 폴더 구조가 URL 경로와 매핑됩니다.
+
+파일명:
+파일 이름은 소문자로 작성하는 것이 일반적이지만, 대소문자 혼합도 가능함. 예: about.tsx → /about, ContactUs.tsx → /contact-us
+확장자:
+지원되는 확장자: .js, .jsx, .ts, .tsx
+동적 라우팅:
+파일 이름을 대괄호([])로 감싸면 동적 라우팅을 생성. 예: [id].tsx → /123 또는 /post-title
+캐치올 라우팅:
+파일 이름에 **[...slug]**를 사용하면 다중 경로를 처리. 예: [...slug].tsx → /, /path, /path/to/page
+특수 파일:
+_app.tsx: 앱 전체의 공통 레이아웃 또는 상태를 정의.
+_document.tsx: HTML <head>나 <body>의 커스텀 구조를 설정.
+_error.tsx: 404 또는 500 오류 페이지를 커스터마이징.
+
+- API 라우트 규칙 (pages/api)
+pages/api 폴더 안의 파일은 API 엔드포인트로 사용.
+파일 이름이 URL 경로로 매핑됨.
+예: pages/api/hello.ts → /api/hello
+
+- 컴포넌트 파일 규칙
+components 폴더: 재사용 가능한 UI 컴포넌트를 보관하는 데 사용.
+파일 및 폴더 이름은 일반적으로 PascalCase를 따름.
+예: Header.tsx, Footer.tsx
+
+## Route Group (()), Private Folder (_) 사용

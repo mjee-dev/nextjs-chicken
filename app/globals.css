@@ -14,8 +14,116 @@
   }
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  font-family: /* -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+    "Noto Sans DemiLight", "malgun gothic", AppleGothic, dotum, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.btn {
+  font-size: 0.975rem;
+  height: 54px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Viewport height */
+}
+
+header {  
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 205px;
+  z-index: 1000;
+}
+main {
+  flex: 1; /* Main content takes up remaining space */
+  padding: 1rem;
+  margin-top: calc(205px); 
+  overflow-y: auto;
+  align-items: center;  /* 가운데 정렬 */
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* 다크모드 */
+:root {   /*:root : 문서의 최상위 요소, 기본 값을 설정 */
+  --background-color:white;
+  --text-color: #191919;
+  --side-color:rgb(32, 32, 32);
+}
+[data-theme='light'] {
+  --background-coloir:#fff;
+}
+[data-theme='dark'] { /*--background-color, --text-color : 사용자 정의 css 변수,  CSS 변수는 --로 시작*/
+  --background-color:#191919;
+  --text-color: white;
+  --border-bottom: 1px solid gray;
+  --button-color: #bcabab;
+}
+body {
+  background-color: var(--background-color);  /*var을 사용하여 변수값 참조*/
+  color: var(--text-color);
+}
+header, footer, nav {
+  /* background-color: var(--side-color) !important; */
+  color: var(--text-color) !important;
+}
+button {
+  background-color: var(--side-color);
+}
+
+.backg-white {
+  --tw-bg-opacity: 1;
+  background-color: #fff;
+}
+.ylw {
+  --tw-bg-opacity: 1 !important;
+  background-color: oklch(84.71% 0.199 83.87 / 1) !important;
+}
+
+.toggle-password {
+  position: relative;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+@media (min-width: 640px) {
+  
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

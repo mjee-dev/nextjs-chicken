@@ -1,6 +1,6 @@
 // app/auth-layout.tsx
-import Header from './Header';
-import Footer from './Footer';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { ReactNode } from 'react';
 
 export default function MainLayout({ children }: { children: ReactNode }) {
