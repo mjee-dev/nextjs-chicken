@@ -10,5 +10,5 @@ const TestSchema = new Schema({
   
   type ListType = InferSchemaType<typeof TestSchema>;
   
-  export default mongoose.models.Planets || mongoose.model("Test", TestSchema);
+  export default mongoose.models.List || mongoose.model("Test", TestSchema);
   export type { ListType };

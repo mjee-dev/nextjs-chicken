@@ -73,6 +73,10 @@ footer {
   text-align: center;
 }
 
+.focus {
+  box-shadow: 0 0 0 3px rgba(255, 119, 119, .3);
+}
+
 /* 다크모드 */
 :root {   /*:root : 문서의 최상위 요소, 기본 값을 설정 */
   --background-color:white;
