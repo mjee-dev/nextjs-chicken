@@ -1,3 +1,7 @@
+const dotenv = require('dotenv');
+dotenv.config({ path: '.env' });
+console.log("### MongoDB URI:", process.env.MONGODB_URI);
+
 const nextConfig = {
   reactStrictMode: true,
   // 기타 설정
@@ -16,6 +20,9 @@ const nextConfig = {
     ],
     dangerouslyAllowSVG: true, // SVG 이미지 허용
   },
+  env: {
+    MONGODB_URI: process.env.MONGODB_URI,
+  }
 }
 
 /* @type {import('next').NextConfig} */

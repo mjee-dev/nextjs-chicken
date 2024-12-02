@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
 
     // 응답 반환
     // return NextResponse.json({ message: 'Data received successfully', data: body });
+    console.log(`savedDocument => ${savedDocument}`);
     return NextResponse.json(savedDocument, {status : 201});
   } catch (error) {
     console.error('Error handling request:', error);

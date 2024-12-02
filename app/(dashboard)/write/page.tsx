@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 
 export default function Write() {
-    const [data, setData] = useState('');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+
     const [response, setResponse] = useState('');
 
     const sendData = async () => {
@@ -13,7 +15,7 @@ export default function Write() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ data }),
+                body: JSON.stringify({ title, content }),
             });
     
             const result = await res.json();
@@ -26,7 +28,12 @@ export default function Write() {
 
     return (
         <div className="w-80">
-            <input type="text" className="input input-bordered w-full max-w-xs" name="title" value={data} onChange={(e) => setData(e.target.value)}/>
+            <label>
+                title <input type="text" className="input input-bordered w-full max-w-xs" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+            </label>
+            <label>
+                content <input type="text" className="input input-bordered w-full max-w-xs" name="content" value={content} onChange={(e) => setContent(e.target.value)}/>
+            </label>
             <button className="btn" onClick={sendData}>제출</button>
             <p>Response: {response}</p>
         </div>
