@@ -8,9 +8,7 @@ const TestSchema = new Schema({
     updatedAt: Date
   });
   
-  // 타입 추론
-  type ListType = InferSchemaType<typeof TestSchema>;
+type BoardType = InferSchemaType<typeof TestSchema>;
   
-  // 조건부 모델 정의
-  export default mongoose.models.Test || mongoose.model("Test", TestSchema);
-  export type { ListType };
+ export default mongoose.models.List || mongoose.model("Test", TestSchema);
+ export type { BoardType };

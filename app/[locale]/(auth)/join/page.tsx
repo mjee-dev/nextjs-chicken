@@ -88,7 +88,7 @@ function Join() {
         setErrorMsgs(erros);
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
         if (isJoinVaild) {

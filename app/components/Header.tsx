@@ -16,6 +16,7 @@ const user = {
 const navigation = [
     { name: '홈', link: '/', current: true },
     { name: '로그인', link: '/login', current: false },
+    { name: '게시판', link: '/list', current: false },
     { name: '지도', link: '/map', current: false },
     { name: '내 정보', link: '/myInfo/:userId', current: false },
     { name: '회원가입', link: '/join', current: false },

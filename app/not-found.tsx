@@ -1,7 +1,8 @@
 'use client';
 
 import React from "react";
-import MainLayout from "./(dashboard)/layout";
+import MainLayout from "./[locale]/(main)/layout";
+
 
 function NotFound() {
     return (

@@ -1,9 +1,5 @@
-
-// import './src/styles/index.css';
-// import './src/styles/App.css';
-
-import MainLayout from "./(dashboard)/layout";
-import "./globals.css";
+import MainLayout from "./[locale]/(main)/layout";
+import "./styles/globals.css";
 
 export default function Home() {
   return (

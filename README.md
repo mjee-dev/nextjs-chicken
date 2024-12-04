@@ -71,8 +71,164 @@ components 폴더: 재사용 가능한 UI 컴포넌트를 보관하는 데 사�
 예: Header.tsx, Footer.tsx
 
 ## Route Group (()), Private Folder (_) 사용
+Route Group
+- (group-name)/: 경로를 그룹화하여 레이아웃, 기능 등을 그룹별로 관리. (URL 영향X)
+Private Folder (_folder)
+- _internal/: 내부적으로만 사용되는 파일들을 모아둔 폴더.
+외부 접근이 필요 없는 유틸리티, 데이터베이스 설정, 인증 로직 등을 저장.
 
 ## 스퀘어[] 브래킷 사용
 스퀘어 브래킷 사용으로 시작하는 폴더명은 Next.js에서 다이내믹 라우팅으로 간주됩니다.
 
 그리고 스퀘어 브래킷 안에 있는 단어가 바로 동적인 라우팅 주소 즉, 파라미터가 됩니다.
+
+## routing
+app
+    (auth)
+        signup
+            -page.tsx
+        login
+            -page.tsx
+        layout.tsx
+    (dashboard)
+        list
+            -page.tsx
+        map
+            -page.tsx
+        layout.tsx
+    -components
+        -BoardList.tsx
+        -PostDetail.tsx
+        -Footer.tsx
+        -Header.tsx
+
+----------------------
+📄 정적인 페이지는 Server Component
+📄 동적인 페이지는 Client Component
+app
+    -[locale] (Navigation bar, [locale]/layout.tsx에 추가)
+        -(main)
+            -(policy)
+                -payment-policy
+                -terms
+            -account
+            -about  (/about)
+                page.tsx
+            -download
+            -news
+                -[...news]  (동적 라우팅. https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes 참고)
+                -
+        -(sign)
+        -reject-email
+        layout.tsx
+        page.tsx    (Home페이지)
+        not-found.ts
+
+        -(auth)
+            -join (client)
+                page.tsx
+            -login (client)
+                page.tsx
+            layout.tsx
+
+        -(main)  (서버 + 클라이언트)
+            -board
+                page.tsx    (server)
+                -[id]
+                    page.tsx    (server, /board/:id)
+            -create-post    (client)
+                page.tsx
+                
+            -map
+                page.tsx
+            -myInfo
+                -[userId]
+                    page.tsx
+                page.tsx
+            layout.tsx
+    -api    (API Endpoint, Endpoint: API가 서버에서 리소스에 접근할 수 있도록 가능하게 하는 URL)
+        -posts  (게시글 관련 API)
+            route.ts    (server, POST 요청 처리)
+       
+        -models
+            board.ts
+            list.ts
+    -public     (코드에서 base URL(/)로 접근 가능)
+        -icons  (아이콘 같은 svg파일들)
+        -images (jpn, png)
+        -fonts  (ttf형식 권장)
+
+    -containers (component > containers > pages 흐름)
+        -board
+            BoardList.tsx
+            PostDetail.tsx
+        -account
+            -profile
+            -subscription
+            Account.tsx
+        -download
+        -main
+            Feature.tsx
+            FeatureDetail.tsx
+            Faq.tsx
+
+    -[locale]
+
+    -components     (UI 기본)
+        -article
+
+        -button
+            Button.tsx
+            LoginButton.tsx
+            PasswordButton.tsx
+            SubmitButton.tsx
+        -inputField
+        -modal
+            Modal.tsx
+        AccountMenu.tsx
+        Container.tsx
+        Footer.tsx
+        Header.tsx
+        Nav.tsx
+        
+    -styles
+        -component
+            button.css
+        -pages
+            header.css
+            board.css...
+
+        global.css  src/app/layout.tsx에서 임포트하여 전체에 적용하도록 함, 웹폰트 선언 파일, 주로 쓰는 컬러값, CSS 리셋이나 각종 상수 값들을 넣음
+        📄levels.css: 각종 z-index 값을 모아둔 파일로, 이렇게 따로 묶어서 관리하는 것이 좋음
+        animations.css: animation에서 사용하는 키프레임을 모아둔 파일
+
+
+    -_internal  (Private Folder, 서버 전용)
+        mongodb.ts  (server)
+        auth.ts    (server)
+
+    -data   (여러 컴포넌트에서 사용되는 공통된 데이터를 관리)
+        -links    (외부로 연결되는 링크(인스타그램, 유튜브 등)를 관리)
+        metaData.ts
+
+    -hooks
+    -utils  (전반적으로 사용되는 기능 및 규칙과 코드)
+        -Timer.ts
+        -localization
+            -setting.ts
+            -server.ts
+            -client.tsx
+
+    -middleware.ts  (무조건 root 바로 아래에 있어야함 -> 인증 및 리다이렉트 처리, 요청/응답 수정, 글로벌 로직 실행)
+
+
+- (auth)
+> signup
+> login
+
+- (service)
+> map
+
+- (board)
+> write
+> list

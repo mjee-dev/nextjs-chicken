@@ -1,6 +1,7 @@
 'use client';
 
 import { ListType } from "@/app/api/models/list";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 //import { format } from 'date-fns';
 
@@ -34,15 +35,17 @@ export default  function List() {     // useEffect 같은 훅은 리액트 컴�
     if (error) return <div>Error : {error}</div>
 
     return (
-        <div>
+        <div className="card bg-base-100 w-96 shadow-xl">
         {boardList.map((item: ListType) => (
-            <div key={item._id?.toString()}>
-                <ul>
-                    <li><b>{item.title}</b></li>
-                    <li><p>{item.content}</p></li>
-                    {/* <li><p>{new Date(item.createdAt).toLocaleDateString()}</p></li> */}
-                    {/* <p>Created At: {format(new Date(item.createdAt), 'yyyy-MM-dd HH:mm')}</p> */}
-                </ul>
+            <div className="card-body" key={item._id?.toString()}>
+                <Link href={`/list/${item._id?.toString()}`}>
+                    <ul>
+                        <li><h2 className="card-title">{item.title}</h2> key: {item._id?.toString()}</li>
+                        <li><p>{item.content}</p></li>
+                        {/* <li><p>{new Date(item.createdAt).toLocaleDateString()}</p></li> */}
+                        {/* <p>Created At: {format(new Date(item.createdAt), 'yyyy-MM-dd HH:mm')}</p> */}
+                    </ul>
+                </Link>
             </div>
        ))}
        </div>
