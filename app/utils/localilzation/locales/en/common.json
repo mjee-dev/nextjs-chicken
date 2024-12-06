@@ -6,6 +6,9 @@
         "mypage": "My Page",
         "signup": "Signup",
         "map": "map"
+    },
+    "text": {
+        "home": "Hello Tailwind! Home!"
     }
     
 }

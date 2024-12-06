@@ -37,12 +37,12 @@ function Header () {
     const {t} = useTranslation(locale, 'common');
 
     const navigation = [
-        { name: t('home'), link: '/', current: true },
-        { name: t('login'), link: '/login', current: false },
-        { name: t('board'), link: '/list', current: false },
-        { name: t('map'), link: '/map', current: false },
-        { name: t('myPage'), link: '/myInfo/:userId', current: false },
-        { name: t('signup'), link: '/join', current: false },
+        { name: t('menu.home'), link: '/', current: true },
+        { name: t('menu.login'), link: '/login', current: false },
+        { name: t('menu.board'), link: '/list', current: false },
+        { name: t('menu.map'), link: '/map', current: false },
+        { name: t('menu.mypage'), link: '/myInfo/:userId', current: false },
+        { name: t('menu.signup'), link: '/join', current: false },
     ];
 
     // 다크 테마
@@ -83,7 +83,7 @@ function Header () {
                                                     aira-current={item.current ? 'page' : undefined}
                                                     className={classNames(
                                                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                        'rounded-md px-3 py-2 text-sm font-medium',
+                                                        'rounded-md px-3 py-2 text-l font-medium',
                                                     )}
                                                 >{item.name}
                                                 </Link>   
@@ -150,7 +150,7 @@ function Header () {
                                     {/* 프로필 메뉴 dropdown */}
                                     <Menu as="div" className="relative ml-3">
                                         <div>
-                                            <MenuButton className="relative flex max-w-xs items-center rounded-full bg-yellow-400 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                            <MenuButton className="relative flex max-w-xs items-center rounded-full bg-yellow-400 text-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                 <span className="absolute -inset-1.5"></span>
                                                 <span className="sr-only">Open user menu</span>
                                                 <Image alt="" src={user.imageUrl} className="size-8 rounded-full" width={32} height={32}/>
@@ -165,7 +165,7 @@ function Header () {
                                                 <MenuItem key={item.name}>
                                                     <a
                                                         href={item.href}
-                                                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none">
+                                                        className="block px-4 py-2 text-md font-medium text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none">
                                                         {item.name}
                                                     </a>
                                                 </MenuItem>
@@ -220,7 +220,7 @@ function Header () {
                                 </div>
                                 <div className="ml-3">
                                     <div className="text-base/5 font-medium text-white">{user.name}</div>
-                                    <div className="text-sm font-medium text-gray-400">{user.email}</div>
+                                    <div className="text-md font-medium text-gray-400">{user.email}</div>
                                 </div>
                                 {/* 알림 아이콘  */}
                                 <button type="button" className="relative ml-auto shrink-0 rounded-full bg-yellow-400 p-1 text-gray-400 hover:text-white

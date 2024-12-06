@@ -6,6 +6,9 @@
         "mypage": "마이페이지",
         "signup": "회원가입",
         "map": "지도"
+    },
+    "text": {
+        "home": "안녕 Tailwind! 홈!"
     }
     
 }

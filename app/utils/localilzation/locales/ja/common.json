@@ -1,0 +1,14 @@
+{
+    "menu": {
+        "home": "Home",
+        "login": "Login",
+        "board": "Board",
+        "mypage": "My Page",
+        "signup": "Signup",
+        "map": "map"
+    },
+    "text": {
+        "home": "HELLO Tailwind! Home!"
+    }
+    
+}

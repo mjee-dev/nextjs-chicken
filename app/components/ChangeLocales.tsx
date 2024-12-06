@@ -10,7 +10,7 @@ const ChangeLocale = () => {
 
     const handleLocaleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newLocale = event.target.value;
-
+        console.log(`handleLocaleChange, newLocale: ${newLocale}, urlSegments: ${urlSegments}`);
         // This is used by the Header component which is used in `app/[locale]/layout.tsx` file,
         // urlSegments will contain the segments after the locale.
         // We replace the URL with the new locale and the rest of the segments.
@@ -19,7 +19,7 @@ const ChangeLocale = () => {
 
     return (
         <div className="test-change-locale">
-            <select onChange={handleLocaleChange} value={params.locale}>
+            <select onChange={handleLocaleChange} value={params.locale} className='select-md select'>
                 <option value="ko">🇰🇷 한국어</option>
                 <option value="en">🇺🇸 English</option>
                 <option value="ja">🇯🇵 日本語</option>
