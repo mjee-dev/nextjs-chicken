@@ -104,6 +104,7 @@ function Header () {
                                         </svg>
                                         <span className="sr-only">Toggle dark/light mode</span>
                                     </button> */}
+                                    <ChangeLocale />
 
                                     {/* Dark 모드 아이콘 */}
                                     <label className="flex cursor-pointer gap-2 px-4">
@@ -270,7 +271,6 @@ function Header () {
                     </div>
                 </div>
                 {/* 헤더 contents 끝 */}
-                <ChangeLocale /> 
             </header>
     );
 }
