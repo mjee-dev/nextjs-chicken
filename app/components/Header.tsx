@@ -5,9 +5,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Image from "next/image";
-import { useParams, usePathname } from "next/navigation";
-import { LocaleTypes } from "../utils/localilzation/setting";
-import { useTranslation } from "../utils/localilzation/client";
+import { usePathname } from "next/navigation";
 import ChangeLocale from "./ChangeLocales";
 
 const user = {
@@ -16,8 +14,6 @@ const user = {
     imageUrl:
       'https://lh3.googleusercontent.com/a/ACg8ocI2218a_iAJxNw4SzNJPo0HJ07nAh3xX4mmlzllRwfUKF5RPe48=s96-c-rg-br100',
 };
-
-
 
 const userNavigation = [
     { name: 'Your Profile', href: '#' },
@@ -29,20 +25,16 @@ function classNames(...classes: (string | undefined)[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-
 function Header () {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const pathName = usePathname();
-    const locale = useParams()?.locale as LocaleTypes;
-    const {t} = useTranslation(locale, 'common');
-
     const navigation = [
-        { name: t('menu.home'), link: '/', current: true },
-        { name: t('menu.login'), link: '/login', current: false },
-        { name: t('menu.board'), link: '/list', current: false },
-        { name: t('menu.map'), link: '/map', current: false },
-        { name: t('menu.mypage'), link: '/myInfo/:userId', current: false },
-        { name: t('menu.signup'), link: '/join', current: false },
+        { name: '홈', link: '/', current: pathName === '/' ? true : false },
+        { name: '로그인', link: '/login', current: pathName === '/login' ? true : false },
+        { name: '게시판', link: '/list', current: pathName.includes('/list') ? true : false },
+        { name: '지도', link: '/map', current: pathName === '/map' ? true : false },
+        { name: '내 정보', link: '/myInfo/:userId', current: pathName.includes('/myInfo') ? true : false },
+        { name: '회원가입', link: '/signup', current: pathName === '/signup'? true : false },
     ];
 
     // 다크 테마
@@ -55,7 +47,6 @@ function Header () {
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
     };
-
 
     return (
             /* 헤더 메뉴 */

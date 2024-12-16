@@ -1,4 +1,4 @@
-import MainLayout from "./[locale]/(main)/layout";
+import MainLayout from "./(main)/layout";
 import "./styles/globals.css";
 
 export default function Home() {
