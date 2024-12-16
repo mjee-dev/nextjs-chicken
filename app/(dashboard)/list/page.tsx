@@ -1,5 +1,6 @@
 import { ListType } from "@/app/api/models/list";
 import Link from "next/link";
+import { format } from "date-fns";
 
  async function fetchBoardList():Promise<ListType[]> {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/list`, { cache : "no-store"});   //최신 데이터 가져오기, 필요에 따라 "force-cache"로 변경
@@ -30,7 +31,7 @@ export default async function List() {
 
     return (
         <div className="card bg-base-100 w-96 shadow-xl">
-            {boardList.map((item: ListType) => (
+            {boardList.map((item) => (
                 <div className="card-body" key={item._id?.toString()}>
                     <Link href={`/list/${item._id?.toString()}`}>
                         <ul>
@@ -41,9 +42,11 @@ export default async function List() {
                                 <p>{item.content}</p>
                             </li>
                             {/* 날짜 포맷팅이 필요하다면 주석 해제 */}
-                            {/* <li>
-                                <p>{new Date(item.createdAt).toLocaleDateString()}</p>
-                            </li> */}
+                            <li>
+                                <p>
+                                    {format(new Date(item.createdAt), "yyyy-MM-dd HH:mm")}
+                                </p>
+                            </li>
                         </ul>
                     </Link>
                 </div>
