@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 
-function Join() {
+function Signup() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -27,6 +27,7 @@ function Join() {
             ...formData,
             [name]: value
         });
+        console.log(`## 이메일 value => ${formData.email}`);
         validate(e);
     }
     
@@ -45,8 +46,9 @@ function Join() {
                 break;
         
             case 'email':
-                if (!formData.email) {
+                if (formData.email.length === 0) {
                     erros.email = `이메일을 입력해주세요.`;
+                    console.log(`email length => ${formData.email.length}`);
                     isJoinVaild = false;
                 } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
                     erros.email = `이메일 형식으로 입력해주세요.`;
@@ -134,4 +136,4 @@ function Join() {
     );
 }
 
-export default Join;
+export default Signup;
