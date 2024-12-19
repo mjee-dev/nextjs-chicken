@@ -3,9 +3,11 @@ import connectToDatabase from "@/app/lib/mongodb";
 
 // https://typescript-eslint.io/rules/no-unused-vars
 export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const { id } = await params;    // parmas 값 비동기로 접근
+    
     try {
         await connectToDatabase();
-        const boardDetail = await List.findById(params.id);
+        const boardDetail = await List.findById(id);
 
         if (!boardDetail) {
             return new Response("Not Found", { status: 404 });

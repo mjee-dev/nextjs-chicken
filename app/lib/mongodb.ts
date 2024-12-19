@@ -22,7 +22,7 @@ if (!cached) {
 
 async function connectToDatabase() {
   if (cached.conn) {
-    console.log('캐싱된 커넥션을 사용합니다.');
+    console.log('◽◽ 캐싱된 커넥션을 사용합니다. ◽◽');
     return cached.conn;
   }
 

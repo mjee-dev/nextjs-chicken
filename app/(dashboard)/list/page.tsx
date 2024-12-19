@@ -10,7 +10,7 @@ import { format } from "date-fns";
     }
 
     const res = await response.json();
-    console.log(`## response => ${JSON.stringify(res)}`);
+    console.log(`## 게시판 Response => ${JSON.stringify(res)}`);
 
     return res.data;
 }
