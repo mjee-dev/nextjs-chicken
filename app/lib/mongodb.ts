@@ -1,3 +1,44 @@
+import { MongoClient } from "mongodb";
+
+declare global {
+  // eslint-disable-next-line no-var
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
+}
+
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
+
+const MONGO_URI = process.env.MONGODB_URI || "";
+
+console.log("◽◽ Connecting to MongoDB ◽◽");
+
+// global 객체 : Node.js 환경에서 애플리케이션 전체에서 공유되므로, 연결 상태가 유지 (이미 연결되어 있는 경우 새 연결 생성하지 않음)
+if (!global._mongoClientPromise) {
+  client = new MongoClient(MONGO_URI); // 기본 URI 설정
+  clientPromise = client.connect();
+  global._mongoClientPromise = clientPromise;   // 전역 객체에 저장
+
+  console.log(`◽◽ 전역 객체에 클라이언트 생성, DB 연결되었습니다. ◽◽`);
+} else {
+  clientPromise = global._mongoClientPromise;   // 기존 객체 사용
+  console.log('◽◽ 이미 전역 객체에 저장된 클라이언트 DB 연결을 재사용합니다. ◽◽');
+}
+
+// 클라이언트 반환
+export const getClient = async () => {
+  if (!client) {
+    client = await clientPromise;   // 기존 연결을 반환
+  }
+  return client;
+};
+
+// 데이터베이스 반환
+export const getDatabase = async (dbName: string) => {
+  const client = await getClient();
+  return client.db(dbName);
+};
+
+/* 
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
@@ -43,3 +84,4 @@ async function connectToDatabase() {
 }
 
 export default connectToDatabase;
+ */
