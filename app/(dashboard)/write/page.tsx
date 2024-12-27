@@ -10,7 +10,7 @@ export default function Write() {
 
     const sendData = async () => {
         try {
-            const res = await fetch('/api/write', {
+            const res = await fetch('/api/post', { // '/api/write'
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

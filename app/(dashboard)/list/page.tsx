@@ -1,8 +1,8 @@
-import { ListType } from "@/app/api/models/list";
+import { BoardType } from "@/app/api/models/list";
 import Link from "next/link";
 import { format } from "date-fns";
 
- async function fetchBoardList():Promise<ListType[]> {
+ async function fetchBoardList():Promise<BoardType[]> {
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/list`,
         { cache : "no-store"}   //최신 데이터 가져오기, 필요에 따라 "force-cache"로 변경
@@ -19,7 +19,7 @@ import { format } from "date-fns";
 }
 
 export default async function List() {
-    let boardList: ListType[] = [];
+    let boardList: BoardType[] = [];
     
     try {
         boardList = await fetchBoardList();

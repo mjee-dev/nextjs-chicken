@@ -1,8 +1,8 @@
 import NotFound from "@/app/not-found";
-import { ListType } from "@/app/api/models/list";
+import { BoardType } from "@/app/api/models/list";
 import { format } from "date-fns";
 
-const fetchBoardDetail = async (id: string): Promise<ListType | null> => {
+const fetchBoardDetail = async (id: string): Promise<BoardType | null> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/list/${id}`);
     if (!response.ok) {
         return null;    // 배열[]이 아닌 객체{}에서 title 등 속성 접근

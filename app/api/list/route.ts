@@ -1,6 +1,6 @@
 
 import { NextRequest } from "next/server";
-import { getDatabase } from "@/app/lib/mongodb";
+import { connectToDatabase } from "@/app/lib/mongodb";
 import { NextResponse } from "next/server";
 
 /** 컬렉션명으로 데이터 가져오는 방법 */
@@ -36,7 +36,7 @@ import { NextResponse } from "next/server";
     }
 
     const dbName = process.env.DB_NAME_CHICKEN;
-    const collectionName = process.env.COLLECTION_NAME;
+    const collectionName = process.env.COLLECTION_BOARD;
 
     if (!dbName || !collectionName) {
         return NextResponse.json(
@@ -52,7 +52,7 @@ import { NextResponse } from "next/server";
     } 
 
     try {
-        const db = await getDatabase(dbName as string);
+        const db = await connectToDatabase(dbName);
         const collection = db.collection(collectionName as string);
 
         // 데이터 조회 예제

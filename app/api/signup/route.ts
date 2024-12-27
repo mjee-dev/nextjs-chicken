@@ -1,5 +1,5 @@
 
-import connectToDatabase from "@/app/lib/mongodb";
+
 import user, { UsersType } from "../models/user";
 
 const bcrypt = require("bcrypt");
@@ -13,7 +13,7 @@ const saltRounds = 10;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function POST(request: Request, response: Response) {
     try {
-        await connectToDatabase('chicken');
+        
         
         const data: UsersType = await request.json();
         const userPassword: string = data.password;

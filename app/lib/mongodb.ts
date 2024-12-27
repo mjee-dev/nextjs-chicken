@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, Db } from "mongodb";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -22,6 +22,18 @@ if (!global._mongoClientPromise) {
 } else {
   clientPromise = global._mongoClientPromise;   // 기존 객체 사용
   console.log('◽◽ 이미 전역 객체에 저장된 클라이언트 DB 연결을 재사용합니다. ◽◽');
+}
+
+export const connectToDatabase = async (dbName: string): Promise<Db> => {
+  try {
+    if (!client) {
+      client = await clientPromise;   // 기존 연결 반환
+    }
+    return client.db(dbName);
+  } catch (error) {
+    console.error(`MongoDB 연결 실패, ${JSON.stringify(error)}`);
+    throw new Error("Failed to connect to the database");
+  }
 }
 
 // 클라이언트 반환

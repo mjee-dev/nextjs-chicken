@@ -1,5 +1,6 @@
 // app/api/example/route.ts
-import connectToDatabase from '@/app/lib/mongodb';
+
+import { connectToDatabase } from '@/app/lib/mongodb';
 import mongoose from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,10 +11,12 @@ const TestSchema = new mongoose.Schema({
 
 const TestModel = mongoose.models.Test || mongoose.model('Test', TestSchema);
 
+/** MongoDB Database명, colletion명 고정 연결 */
 export async function POST(request: NextRequest) {
   try {
     // MongoDB 연결
-    await connectToDatabase();
+    const db = await connectToDatabase(dbName as string);
+    const collection = db.collection(collectionName as string);
 
     // 요청 데이터 파싱
     const body = await request.json();
