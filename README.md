@@ -245,3 +245,6 @@ app
 
 📄 route.ts 파일에서 HTTP 메서드를 처리하는 함수를 Named Export로 작성
 - Next.js 13+ App Router에서는 API 라우트 파일에서 HTTP 메서드(GET, POST 등)에 해당하는 함수를 Named Export로 작성
+
+📄 .env 파일은 보통 로컬에서만 유지하고, 공유할 경우 .env.example 같은 템플릿 파일을 만들어 사용
+- .env 파일을 Git에 포함하려면 .gitignore에서 해당 항목을 제거하거나 주석 처리 (권하지않음)

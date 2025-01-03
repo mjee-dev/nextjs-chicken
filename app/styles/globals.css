@@ -120,6 +120,11 @@ button {
   font-size: 18px;
 }
 
+.guideTxt {
+  color: red !important;
+  font-size: 13px !important;
+}
+
 @media (min-width: 640px) {
   
 }

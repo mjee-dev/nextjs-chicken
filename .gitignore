@@ -29,8 +29,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files (can opt-in for committing if needed) 커밋 제외할 파일
+#.env* (기존) // .env 파일은 보안상 커밋에서 제외되어 .env.example 파일로 대체하여 커밋
+.env
 
 # vercel
 .vercel

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const { id } = await params;    // parmas 값 비동기로 접근
     
     const dbName = process.env.DB_NAME_CHICKEN;
-    const collectionName = process.env.COLLECTION_NAME;
+    const collectionName = process.env.COLLECTION_BOARD;
     
     try {
         const db = await getDatabase(dbName as string);

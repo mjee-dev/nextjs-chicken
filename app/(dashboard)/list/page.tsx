@@ -3,6 +3,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 
  async function fetchBoardList():Promise<BoardType[]> {
+    console.log(`NEXT_PUBLIC_BASE_URL: ${process.env.NEXT_PUBLIC_BASE_URL}`);
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/list`,
         { cache : "no-store"}   //최신 데이터 가져오기, 필요에 따라 "force-cache"로 변경
@@ -24,7 +25,7 @@ export default async function List() {
     try {
         boardList = await fetchBoardList();
     } catch (error) {
-        console.error(`Error fetching board list : ${error}`);
+        console.error(`Error fetching board list => ${error}`);
         return <div>Error loading the list. Please try again later.</div>;
     }
 
