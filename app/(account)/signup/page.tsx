@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -24,7 +24,33 @@ function Signup() {
     // useRef를 통해 input 요소를 참조할 객체를 생성. 일반적으로 DOM 을 직접 조작해야할 때
     // 포커스 설정, 텍스트 입력 초기화, 스크롤 동작 조정
     const passwordInputRef = useRef<HTMLInputElement | null>(null);
-    let isJoinVaild: boolean = false;
+
+    // 유효성 값 상태 관리 (`useState` 를 사용하지 않으면 상태를 관리하거나 변경사항을 반영할 수 없음/ `useState`를 사용하지 않을 때는 상태가 변경되더라도 React가 상태 변경을 추적하지 않음)
+    const [isValid, setIsValid] = useState(false);
+    // useEffect(() => {
+    //     const valid =
+    //     validateCheck({ target: { name: "name", value: formData.name } } as React.ChangeEvent<HTMLInputElement>) &&
+    //     validateCheck({ target: { name: "email", value: formData.email } } as React.ChangeEvent<HTMLInputElement>) &&
+    //     validateCheck({ target: { name: "password", value: formData.password } } as React.ChangeEvent<HTMLInputElement>);
+
+    //     setIsValid(valid); // 유효성 검사 결과로 상태 업데이트
+    // }, [formData]);     //  `formData` 가 변경될 때마다 `isValid`상태 업데이트
+
+
+    // // 유효성 체크 함수
+    // const validateCheck = (formData) => {
+    //     const { name, email, password } = formData;
+
+    //     const isNameValid = name.trim().length >= 3;
+    //     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    //     const isPasswordValid = password.length >= 6;
+
+    //     return isNameValid && isEmailValid && isPasswordValid;
+    // };
+
+    // // formData가 변경될 때마다 isValid 상태 계산 (메모이제이션 고려)
+    // const isValid = useMemo(() => validateCheck(formData), [formData]);
+
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {    // 실시간 포커스 아웃시 유효성 검사
         const { name, value } = e.target;
@@ -49,14 +75,19 @@ function Signup() {
         const erros = {...errorMsgs};  // 기존 에러 메시지 복사
         const target = e.target.name;
 
+        let isNameValid: boolean = false;
+        let isEmailValid: boolean = false;
+        let isPasswordValid: boolean = false;
+
         switch (target) {
             case 'name':
                 if (formData.name.length < 2) {
                     erros.name = '이름을 2글자 이상 입력해주세요';
                     console.log(`name length => ${formData.name.length}`);
-                    isJoinVaild = false;
+                    isNameValid = false;
                 } else {
                     erros.name = '';
+                    isNameValid = true;
                 }
                 break;
         
@@ -64,62 +95,81 @@ function Signup() {
                 if (formData.email.length === 0) {
                     erros.email = `이메일을 입력해주세요.`;
                     console.log(`email length => ${formData.email.length}`);
-                    isJoinVaild = false;
+                    isEmailValid = false;
                 } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
                     erros.email = `이메일 형식으로 입력해주세요.`;
-                    isJoinVaild = false;
+                    isEmailValid = false;
                 } else {
                     erros.email = '';
+                    isEmailValid = true;
                 }
                 break;
 
             case 'password':
                 if (!formData.password) {
                     erros.password = `비밀번호를 입력해주세요.`;
-                    isJoinVaild = false;
+                    isPasswordValid = false;
                     passwordInputRef.current?.focus();
                 } else if (formData.password.length < 8) {
                     erros.password = '비밀번호는 최소 8자 이상 입력해주세요.';
-                    isJoinVaild = false;
+                    isPasswordValid = false;
                 // } else if (!/[A-Z]/.test(formData.password)) {
                 //     erros.password = '비밀번호는 최소 한개의 영문 대문자를 포함해서 입력해주세요.';
-                //     isJoinVaild = false;
+                //     isValid = false;
                 // } else if (!/[a-z]/.test(formData.password)) {
                 //     erros.password = '비밀번호는 최소 한개의 영문 소문자를 포함해서 입력해주세요.';
-                //     isJoinVaild = false;
-                console.log(`비밀번호 체크, isJoinVaild => ${isJoinVaild}, length => ${formData.password.length}`);
+                //     isValid = false;
+                console.log(`비밀번호 체크, isValid => ${isValid}, length => ${formData.password.length}`);
                 } else if (!/\d/.test(formData.password)) {
                     erros.password = '비밀번호는 최소 한개의 숫자를 포함해서 입력해주세요.';
-                    isJoinVaild = false;
+                    isPasswordValid = false;
                 } else if (!/[@$!%*?&]/.test(formData.password)) {  // TODO: 최소 한개만 체크했는데 왜 2개 체크해야 true로 넘어가지?
                     erros.password = '비밀번호는 최소 한개의 특수문자를 포함해서 입력해주세요.';
-                    isJoinVaild = false;
+                    isPasswordValid = false;
                 } else {
                     erros.password = '';
-                    isJoinVaild = true;
-                    console.log(`비밀번호 체크 정상, isJoinVaild => ${isJoinVaild}, length => ${formData.password.length}`);
+                    isPasswordValid = true;
+                    console.log(`비밀번호 체크 정상, isValid => ${isValid}, length => ${formData.password.length}`);
                 }
                 
-            break;
+                break;
         }
+        const result = isNameValid && isEmailValid && isPasswordValid;
+        if (!result) setErrorMsgs(erros);
         
-        console.log(`유효성 체크, target: ${target}, erros: ${JSON.stringify(erros)}`);
-        
-        setErrorMsgs(erros);
+        console.log(`@@@ validateCheck => result: ${result}, isNameValid: ${isNameValid}, isEmailValid: ${isEmailValid}, isPasswordValid: ${isPasswordValid}`);
+
+        return result;
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const [response, setResponse] = useState('');
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // 로그인 통신
-        if (isJoinVaild) {
+        // if (isValid) {
 
+        // }
+        try {
+            const res = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ formData }),
+            });
+            
+            const result = await res.json();
+            setResponse(result.message);
+        } catch (error) {
+            console.error(`Error Data: ${error}`);
+            setResponse(`error sending data`);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} method="post">
-            isJoinVaild ▶ {isJoinVaild ? 'true' : 'false'}
+            isValid ▶ {isValid ? 'true' : 'false'}
             <div className="w-96" style={{border: '1px solid #eee'}}>
                 <div>LOGO</div>
                 <label className="input input-bordered flex items-center gap-2 my-2">
@@ -150,7 +200,8 @@ function Signup() {
                 </label>
                 <span className="guideTxt">{errorMsgs.password}</span>
 
-                <button type="submit" disabled={!isJoinVaild} className="btn my-6 ylw font-semibold w-full">
+                {/* TODO: isValid 유효성 체크 disabled={!isValid} */}
+                <button type="submit" className="btn my-6 ylw font-semibold w-full">
                     회원가입
                 </button>
             </div>
