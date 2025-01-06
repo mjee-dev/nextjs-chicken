@@ -19,6 +19,10 @@ export async function POST(request: NextRequest) {
 
     const db = await connectToDatabase(dbName as string);
     const collection = db.collection(collectionName as string);
+
+    // date 날짜 형식 변경
+    const moment = require('moment');
+    const date = moment().format('YYYY-MM-DD HH:mm:ss');
     
     const { title, content } = data;
     // 필수 필드 확인
@@ -30,7 +34,7 @@ export async function POST(request: NextRequest) {
      const result = collection.insertOne({
         title,
         content,
-        createdAt: new Date(),
+        createdAt: date
      })
  
      // 성공 응답

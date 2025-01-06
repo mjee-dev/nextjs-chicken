@@ -8,9 +8,17 @@ const UsersSchema = new Schema({
     name : { type: String, required: true },
     email : { type: String, required: true },
     password : { type: String, required: true },
+    createdAt : {
+        type: String,
+        default: Date.now
+    },
+    updatedAt: {
+        type: String,
+        default: Date.now
+    }
 }, {
     collection: collectionName,   // 저장될 컬렉션 이름 명시
-    timestamps: true,             // createdAt, updatedAt 자동 추가
+    //timestamps: true,             // createdAt, updatedAt 자동 추가
 });
 
 type UsersType = InferSchemaType<typeof UsersSchema>;

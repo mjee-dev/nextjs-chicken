@@ -37,10 +37,17 @@ export async function POST(request: NextRequest) {
         const userPassword: String = data.password;
         const hashPassword: String = await bcrypt.hash(userPassword, saltRounds);
 
+        // date 날짜 형식 변경
+        const moment = require('moment');
+        const date = moment().format('YYYY-MM-DD HH:mm:ss');
+        console.log(`moment date => ${date}`);
+
         const userInfo = new Users({
             name: data.name,
             email: data.email,
-            password: hashPassword
+            password: hashPassword,
+            createdAt: date,
+            updatedAt: date
         });
 
         console.log(`### UserInfo => ${JSON.stringify(userInfo)}`);
@@ -52,7 +59,7 @@ export async function POST(request: NextRequest) {
         console.log(`--- User Info saved: ${JSON.stringify(savedUser)}`);
 
         return NextResponse.json(
-            { messeage: "회원가입에 성공했습니다." },
+            { messeage: "Signup created successfully" },
             { status: 201}
         );
         console.log('User registered successfully');

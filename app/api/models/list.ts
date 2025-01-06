@@ -7,8 +7,8 @@ const BoardSchema = new Schema(
     _id: { type: Schema.Types.ObjectId, required: true },
     title: { type: String, required: true },
     content: { type: String, required: true },
-    createdAt: { type: String, default: null }, // 기본값 null로 설정
-    updatedAt: { type: Date, default: Date.now }, // 기본값 현재 시간
+    createdAt: { type: String, default: Date.now },
+    updatedAt: { type: String, default: null }, // 기본값 null
   },
   { collection: collectionName } // 컬렉션명 설정
 );
