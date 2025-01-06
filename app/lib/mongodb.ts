@@ -1,4 +1,5 @@
 import { MongoClient, Db } from "mongodb";
+import mongoose from "mongoose";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -14,6 +15,7 @@ console.log("◽◽ Connecting to MongoDB ◽◽");
 
 // global 객체 : Node.js 환경에서 애플리케이션 전체에서 공유되므로, 연결 상태가 유지 (이미 연결되어 있는 경우 새 연결 생성하지 않음)
 if (!global._mongoClientPromise) {
+  mongoose.set('bufferCommands', false);  // 버퍼링 비활성화 설정 추가
   client = new MongoClient(MONGO_URI); // 기본 URI 설정
   clientPromise = client.connect();
   global._mongoClientPromise = clientPromise;   // 전역 객체에 저장
@@ -29,6 +31,10 @@ export const connectToDatabase = async (dbName: string): Promise<Db> => {
     if (!client) {
       client = await clientPromise;   // 기존 연결 반환
     }
+
+    // mongoose 연결 보장 (mongoose로 DB 연결 완료)
+    await mongoose.connect(MONGO_URI, { dbName });
+    console.error(`MongoDB 연결 성공, Mongoose connected to database: ⏩ ${mongoose.connection.db?.databaseName}`);
     return client.db(dbName);
   } catch (error) {
     console.error(`MongoDB 연결 실패, ${JSON.stringify(error)}`);

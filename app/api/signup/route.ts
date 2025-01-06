@@ -1,7 +1,7 @@
 
 
 import { connectToDatabase } from "@/app/lib/mongodb";
-import user, { UsersType } from "../models/user";
+import { Users, UsersType } from "../models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 const bcrypt = require("bcrypt");
@@ -13,7 +13,7 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
     try {
         const data: UsersType = await request.json();
 
@@ -24,30 +24,41 @@ export async function POST(request: NextRequest, response: NextResponse) {
         const dbName = process.env.DB_NAME_CHICKEN;
         const collectionName = process.env.COLLECTION_USERS;
 
+        console.log('@@@ Before connecting to database, ');
+
         const db = await connectToDatabase(dbName as string);
         const collection = db.collection(collectionName as string);
+
+        console.log('--- Database connected');
+        console.log(`--- Connected to database: ${db.databaseName}`);
 
       //  console.log(`collection DB => ${JSON.stringify(collection.find())}`);
 
         const userPassword: String = data.password;
         const hashPassword: String = await bcrypt.hash(userPassword, saltRounds);
 
-        const userInfo = new user({
+        const userInfo = new Users({
             name: data.name,
             email: data.email,
             password: hashPassword
         });
 
         console.log(`### UserInfo => ${JSON.stringify(userInfo)}`);
-        await userInfo.save();
+
+        console.log('--- Before saving user info');
+        const savedUser = await userInfo.save({
+            writeConcern: {w: 'majority'}       // writeConcern 설정이 엄격한 경우, 실제로 데이터가 DB에 반영되기 전에 트랜잭션이 실패할 수 있음
+        });
+        console.log(`--- User Info saved: ${JSON.stringify(savedUser)}`);
 
         return NextResponse.json(
             { messeage: "회원가입에 성공했습니다." },
             { status: 201}
         );
+        console.log('User registered successfully');
         //return Response.json({ message: "회원가입에 성공했습니다." });
     } catch (error) {
-        console.error(`회원가입 Error => ${JSON.stringify(error)}`);
+        console.error('회원가입 Error: ', error);
         return NextResponse.json({ message: '회원가입에 실패했습니다.'});
     }
 }

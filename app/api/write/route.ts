@@ -14,6 +14,9 @@ const TestModel = mongoose.models.Test || mongoose.model('Test', TestSchema);
 /** MongoDB Database명, colletion명 고정 연결 */
 export async function POST(request: NextRequest) {
   try {
+    const dbName = process.env.DB_NAME_CHICKEN;
+    const collectionName = process.env.COLLECTION_BOARD;
+    
     // MongoDB 연결
     const db = await connectToDatabase(dbName as string);
     const collection = db.collection(collectionName as string);

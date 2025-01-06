@@ -35,6 +35,10 @@ export default async function List() {
 
     return (
         <div className="card bg-base-100 w-96 shadow-xl">
+            <Link href='/write'>
+                <button className="btn" >새 글 작성</button>
+            </Link>
+            
             {boardList.map((item) => (
                 <div className="card-body" key={item._id?.toString()}>
                     <Link href={`/list/${item._id?.toString()}`}>

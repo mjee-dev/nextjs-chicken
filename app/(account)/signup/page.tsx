@@ -156,20 +156,28 @@ function Signup() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ formData }),
+                body: JSON.stringify( formData ),
             });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                console.error(`회원가입 error: ${errorData.message}`);
+                setResponse(errorData.message);
+                return;
+            }
             
             const result = await res.json();
+            console.log(`회원가입 성공: ${JSON.stringify(result)}`);
             setResponse(result.message);
         } catch (error) {
-            console.error(`Error Data: ${error}`);
-            setResponse(`error sending data`);
+            console.error(`Network error: ${error}`);
+            setResponse(`회원가입에 실패했습니다.`);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} method="post">
-            isValid ▶ {isValid ? 'true' : 'false'}
+            <p>Response: {response}</p>
             <div className="w-96" style={{border: '1px solid #eee'}}>
                 <div>LOGO</div>
                 <label className="input input-bordered flex items-center gap-2 my-2">
