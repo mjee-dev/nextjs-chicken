@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function Login() {
     // 로그인 정보
     const [formData, setFormData] = useState({
         email: '',
-        username: '',
         password: ''
     });
 
@@ -15,6 +16,8 @@ function Login() {
     const togglePassword = () => {
         setShowPassword(!showPassword);
     };
+
+    const [response, setResponse] = useState('');
 
     const isLoginVaild: boolean = false;
 
@@ -32,10 +35,34 @@ function Login() {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
         // 로그인 처리
-        console.log(formData);
+        console.log(`로그인 => email: ${formData.email}, password: ${formData.password}`);
+
+        try {
+            const res = await signIn("credentials", {
+                redirect: false,
+                email: formData.email,
+                password: formData.password,
+                callbackUrl: "/",
+            }).then((result) => {
+                console.log(result!.error);
+
+                if (result!.error) {
+                    alert(result?.error);
+                    return;
+                } else {
+                    alert('인증에 성공하였습니다.');
+                    router.push("/");   // 인증 성공 후 리다이렉트. 홈으로 설정
+                }
+            });
+        } catch (error) {
+            console.error(`Network error: ${error}`);
+        }
       };
 
     return (
@@ -53,19 +80,9 @@ function Login() {
                         <path
                         d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                     </svg>
-                    <input type="text" className="grow" placeholder="이메일을 입력해주세요." />
+                    <input type="text" name="email" className="grow" placeholder="이메일을 입력해주세요." onChange={handleChange} />
                 </label>
-                <label className="input input-bordered flex items-center gap-2 my-2">{/* 아이디 */}
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        className="h-4 w-4 opacity-70">
-                        <path
-                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-                    </svg>
-                    <input type="text" className="grow" placeholder="아이디를 입력해주세요." />
-                </label>
+                
                 <label className="input input-bordered flex items-center gap-2 my-2">{/* 비밀번호 */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -79,6 +96,7 @@ function Login() {
                     </svg>
                     <input
                         type={showPassword ? 'text' : 'password'}
+                        name="password"
                         className="grow"
                         placeholder="비밀번호를 입력해주세요."
                         onChange={handleChange}
@@ -87,7 +105,7 @@ function Login() {
                         {showPassword ? '👁️' : '👁‍🗨'}
                     </span>
                 </label>
-                <button type="submit" className={isLoginVaild ? 'btn my-6 ylw w-full' : 'btn my-6 ylw w-full btn-disabled'}>로그인</button>
+                <button type="submit" className={'btn my-6 ylw w-full'}>로그인</button>
 
                 {/* 간편 로그인 네이버 카카오톡 구글 */}
                 <button className="btn btn-outline btn-success w-full my-1">Naver 로그인</button>
