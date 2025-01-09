@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ChangeLocale from "./ChangeLocales";
+import { useSession } from "next-auth/react";
+import UserGreeting from "./UserGreeting";
 
 const user = {
     name: 'Tom Cook',
@@ -139,6 +141,7 @@ function Header () {
                                     </button>
 
                                     {/* 프로필 메뉴 dropdown */}
+                                    <UserGreeting />
                                     <Menu as="div" className="relative ml-3">
                                         <div>
                                             <MenuButton className="relative flex max-w-xs items-center rounded-full bg-yellow-400 text-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">

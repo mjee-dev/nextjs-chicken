@@ -17,10 +17,6 @@ function Login() {
         setShowPassword(!showPassword);
     };
 
-    const [response, setResponse] = useState('');
-
-    const isLoginVaild: boolean = false;
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target) return;
         const { name, value } = e.target;
@@ -28,11 +24,6 @@ function Login() {
             ...formData,
             [name]: value
         });
-
-        if (name === 'email' && value.length === 0) {
-
-        } else if (name === 'password' && value.length === 0) {
-        }
     };
 
     const router = useRouter();
@@ -45,20 +36,28 @@ function Login() {
 
         try {
             const res = await signIn("credentials", {
-                redirect: false,
+                redirect: true,     // 기본값 true 이므로 생략 가능
                 email: formData.email,
                 password: formData.password,
                 callbackUrl: "/",
             }).then((result) => {
                 console.log(result!.error);
 
-                if (result!.error) {
-                    alert(result?.error);
-                    return;
-                } else {
+                if (result?.ok) {
                     alert('인증에 성공하였습니다.');
                     router.push("/");   // 인증 성공 후 리다이렉트. 홈으로 설정
+                } else {
+                    alert(result?.error);
+                    return;
                 }
+
+                // if (result!.error) {
+                //     alert(result?.error);
+                //     return;
+                // } else {
+                //     alert('인증에 성공하였습니다.');
+                //     router.push("/");   // 인증 성공 후 리다이렉트. 홈으로 설정
+                // }
             });
         } catch (error) {
             console.error(`Network error: ${error}`);

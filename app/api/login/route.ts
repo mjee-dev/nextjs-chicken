@@ -1,4 +1,3 @@
-// app/api/example/route.ts
 import { connectToDatabase } from '@/app/lib/mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import { Users, UsersType } from '../models/user';
@@ -40,9 +39,12 @@ export async function POST(request: NextRequest) {
     }
 
     const isMatched: boolean = await bcrypt.compare(inputPassword, userInfo.password);
+
+    const msg = isMatched ? 'OK' : '아이디 혹은 비밀번호를 확인해주세요.';
     
     return NextResponse.json({
-      message: isMatched ? 'OK !' : '아이디 혹은 비밀번호를 확인해주세요.'
+      data: userInfo,
+      message: msg
     });
   } catch (error) {
     console.error('Error handling request:', error);
