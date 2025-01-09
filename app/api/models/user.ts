@@ -7,7 +7,7 @@ const collectionName = process.env.COLLECTION_USERS || "users";
 const UsersSchema = new Schema({
     name : { type: String, required: true },
     email : { type: String, required: true },
-    password : { type: String, required: true },
+    password : { type: String, required: false },
     createdAt : {
         type: String,
         default: Date.now

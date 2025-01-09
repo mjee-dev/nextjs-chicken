@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     console.log(`-- Database connected`);
     console.log(`-- Connected to databse: ${db.databaseName}`);
 
+    console.log('## login/route.ts');
     const inputPassword: String = body.password;
     const userInfo: UsersType = await Users.findOne({ email: body.email}).exec();
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 
@@ -11,7 +11,6 @@ export default function UserGreeting() {
     const router = useRouter();
     const goToPage = (str: string) => {
         switch (str) {
-            case 'login': router.push('/login'); break;
             case 'signup': router.push('/signup'); break;
         }
     };
@@ -25,7 +24,7 @@ export default function UserGreeting() {
     if (session) {
         return (
             <div>
-                <span>{session.user?.name} 으로 로그인</span>
+                <span>{session.user?.name} 님 </span>
                 <button className="btn btn-outline" onClick={() => signOut({ callbackUrl: '/'})}>로그아웃</button>
             </div>
         );
@@ -33,7 +32,7 @@ export default function UserGreeting() {
 
     return (
         <div>
-            <button className="btn btn-outline" onClick={() => goToPage('login')}>로그인</button>
+            <button className="btn btn-outline" onClick={() => signIn()}>로그인</button>
             <button className="btn btn-outline" onClick={() => goToPage('signup')}>회원가입</button>
         </div>
     );

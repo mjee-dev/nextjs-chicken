@@ -1,5 +1,6 @@
 'use client';
 
+import { signIn } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 
 function Signup() {
@@ -212,6 +213,8 @@ function Signup() {
                 <button type="submit" className="btn my-6 ylw font-semibold w-full">
                     회원가입
                 </button>
+                <button className="btn btn-outline btn-accent w-full my-1" onClick={() => signIn('google')}>Google로 회원가입</button>
+                <button className="btn btn-outline btn-success w-full my-1" onClick={() => signIn('github')}>GitHub로 회원가입</button>
             </div>
 
         </form>

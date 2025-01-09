@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from 'react-toastify';
 
 function Login() {
     // 로그인 정보
@@ -64,6 +65,24 @@ function Login() {
         }
       };
 
+      const handleSignIn = async(param: string) => {
+        console.log(`handleSignIn, param => ${param}`);
+        try {
+            const result = await signIn(param, { redirect: false });    // 창 넘어가지 않고 toast로 에러 확인
+            const str = param === 'google' ? '구글' : 'Github';
+            if (result!.error) {
+                console.log(`${str} 로그인 실패 => ${result!.error}`);
+                toast.error(`${str} 로그인에 실패했습니다. 다시 시도해주세요.`);
+            } else {
+                console.log(`${str} 로그인 성공 => ${result}`);
+                toast.success('로그인에 성공했습니다.');
+            }
+        } catch (error) {
+            console.error(`Unexpected error during sign-in => ${error}`);
+            toast.error('예상치 못한 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+      };
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="w-80" style={{border: '1px solid #eee'}}>
@@ -107,10 +126,8 @@ function Login() {
                 <button type="submit" className={'btn my-6 ylw w-full'}>로그인</button>
 
                 {/* 간편 로그인 네이버 카카오톡 구글 */}
-                <button className="btn btn-outline btn-success w-full my-1">Naver 로그인</button>
+                <button className="btn btn-outline btn-accent w-full my-1" onClick={() => signIn('google')}>Google 로그인</button>
                 <button className="btn btn-outline btn-error w-full my-1">카카오 로그인</button>
-                <button className="btn btn-outline btn-accent w-full my-1">Google 로그인</button>
-
             </div>
         </form>
     );

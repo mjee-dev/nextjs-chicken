@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
       //  console.log(`collection DB => ${JSON.stringify(collection.find())}`);
 
-        const userPassword: String = data.password;
+        const userPassword: String | null | undefined = data.password;
         const hashPassword: String = await bcrypt.hash(userPassword, saltRounds);
 
         // date 날짜 형식 변경
@@ -62,7 +62,6 @@ export async function POST(request: NextRequest) {
             { messeage: "Signup created successfully" },
             { status: 201}
         );
-        console.log('User registered successfully');
         //return Response.json({ message: "회원가입에 성공했습니다." });
     } catch (error) {
         console.error('회원가입 Error: ', error);
