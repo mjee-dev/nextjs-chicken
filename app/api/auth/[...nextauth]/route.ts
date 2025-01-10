@@ -6,6 +6,8 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { Users } from "../../models/user";
 
+console.log(`🥚🥚🥚🥚 GOOGLE_CLIENT_ID => ${process.env.GOOGLE_CLIENT_ID}`);
+
 const handler = NextAuth({
     debug: true,    // 디버그 모드 활성화 (운영에선 false로 변경)
     providers: [
@@ -16,7 +18,8 @@ const handler = NextAuth({
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials, req) {
+            async authorize(credentials) {
+                console.log(`🥚🥚🥚🥚 authorize Credentials`);
                 // 사용자 인증 처리하는 부분 (DB에서 사용자 정보 검증)
                 const params = {
                     email: credentials?.email,
@@ -43,27 +46,26 @@ const handler = NextAuth({
         }),
         // Github 로그인
         GithubProvider({
-            clientId: process.env.GITHUB_CLIENT_ID as string,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET as string
+            clientId: process.env.GITHUB_CLIENT_ID!,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET!
         }),
         // Google 로그인
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
             authorization: {
                 params: {
                     scope: 'openid email profile'
                 }
             },
-            // profile: (profile) => {
-            //     console.log(`구글 프로필 => ${profile}`);
-            //     return (
-            //         id: profile.id,
-            //         name: profile.name,
-            //         email: profile.email,
-            //         image: profile.picture,
-            //     );
-            // };
+            profile(profile) {
+                return {
+                    id: profile.sub,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.picture,
+                };
+            }
         }),
     ],
     secret: process.env.SECRET,
@@ -80,6 +82,11 @@ const handler = NextAuth({
             try {
                 if (account?.provider === 'google') {
                     // 구글에서 받은 이메일을 사용하여 세션을 처리
+                    console.log(`🥚🥚🥚🥚 /api/auth/[...nextauth]/route.ts 🥚🥚🥚🥚`);
+
+                    console.log(`🥚🥚🥚🥚 Google account => ${JSON.stringify(account)}`);
+                    console.log(`🥚🥚🥚🥚 Google profile => ${JSON.stringify(profile)}`);
+
                     const dbName = process.env.DB_NAME_CHICKEN;
                     const collectionName = process.env.COLLECTION_USERS;
                     const db = await connectToDatabase(dbName as string);
@@ -96,37 +103,30 @@ const handler = NextAuth({
                         const moment = require('moment');
                         const date = moment().format('YYYY-MM-DD HH:mm:ss');
 
-                        if (account?.provider === 'google' || account?.provider === 'github') {
-                            user.password = '';
-                        }
-
-                        console.log(`User`);
-
-                        // 새로운 사용자 생성
-                        await Users.create({
+                        const newUser = {
                             name: user.name,
                             email: user.email,
-                            password: user.password,
+                            password: '',
                             createdAt: date,
                             updatedAt: date
-                        });
+                        };
+
+                        // 새로운 사용자 생성
+                        await Users.create(newUser);
                     };
 
-                    if (user.email) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return true;
+                    //return !user.email;
                 }
-            
                 return true;    // 회원가입 및 로그인 허용
             } catch (error) {
                 console.log(`signIn 회원가입 오류 => ${error}`);
                 return false;
             }
         },
-        async redirect() {
-            return '/';
+        async redirect({ url, baseUrl }) {
+            console.log(`🥚🥚🥚🥚 Redirecting to: ${url}, baseUrl: ${baseUrl}`);
+            return baseUrl;     // google 로그인 후 홈으로 이동
         },
         async jwt({ token, user}) {
             // 사용자 인증 후 JWT에 사용자 정보 저장
