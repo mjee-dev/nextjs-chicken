@@ -46,7 +46,7 @@ const handler = NextAuth({
         }),
         // Github 로그인
         GithubProvider({
-            clientId: process.env.GITHUB_CLIENT_ID!,
+            clientId: process.env.GITHUB_CLIENT_ID!,    // !: provider 속성 값이 undefined 를 허용하지 않기 때문
             clientSecret: process.env.GITHUB_CLIENT_SECRET!
         }),
         // Google 로그인

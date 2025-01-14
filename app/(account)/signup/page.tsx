@@ -1,7 +1,9 @@
 'use client';
 
+import { showToast } from "@/app/components/util/toastUtils";
 import { signIn } from "next-auth/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { toast } from 'react-toastify';
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -160,21 +162,32 @@ function Signup() {
                 body: JSON.stringify( formData ),
             });
 
+            const resData = await res.json();
             if (!res.ok) {
-                const errorData = await res.json();
-                console.error(`회원가입 error: ${errorData.message}`);
-                setResponse(errorData.message);
+                console.error(`회원가입 error: ${resData.error}`);
+                handleError(resData.error);
                 return;
             }
-            
-            const result = await res.json();
-            console.log(`회원가입 성공: ${JSON.stringify(result)}`);
-            setResponse(result.message);
+
+            if (resData.error) {
+                handleError(resData.error);
+            } else {
+                showToast.success(resData.message);
+            }
         } catch (error) {
             console.error(`Network error: ${error}`);
+            handleError(error);
             setResponse(`회원가입에 실패했습니다.`);
         }
     };
+
+    const handleError = (error: unknown) => {
+        if (typeof error === 'string') {
+            showToast.error(error);
+        } else {
+            showToast.error('알 수 없는 오류가 발생했습니다.');
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit} method="post">

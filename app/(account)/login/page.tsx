@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { toast } from 'react-toastify';
+import { showToast } from "@/app/components/util/toastUtils";
 
 function Login() {
     // 로그인 정보
@@ -28,6 +28,7 @@ function Login() {
     };
 
     const router = useRouter();
+    const [response, setResponse] = useState<string>('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -37,7 +38,7 @@ function Login() {
 
         try {
             const res = await signIn("credentials", {
-                redirect: true,     // 기본값 true 이므로 생략 가능
+                redirect: false,     // 기본값 true 이므로 생략 가능
                 email: formData.email,
                 password: formData.password,
                 callbackUrl: "/",
@@ -45,20 +46,12 @@ function Login() {
                 console.log(result!.error);
 
                 if (result?.ok) {
-                    alert('인증에 성공하였습니다.');
+                    console.log('인증에 성공하였습니다.');
                     router.push("/");   // 인증 성공 후 리다이렉트. 홈으로 설정
                 } else {
-                    alert(result?.error);
-                    return;
+                    showToast.error(result?.error ?? '로그인에 실패했습니다.');
+                 //   return;
                 }
-
-                // if (result!.error) {
-                //     alert(result?.error);
-                //     return;
-                // } else {
-                //     alert('인증에 성공하였습니다.');
-                //     router.push("/");   // 인증 성공 후 리다이렉트. 홈으로 설정
-                // }
             });
         } catch (error) {
             console.error(`Network error: ${error}`);
@@ -66,7 +59,7 @@ function Login() {
       };
 
       const handleGoogleSignIn = async() => {
-        try {
+        try { 
             await signIn('google');
         } catch (error) {
             console.error(`구글 SignIn Error => ${error}`);

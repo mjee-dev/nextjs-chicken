@@ -13,6 +13,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+// 클라이언트 측에서 fetch를 사용하면, Response 객체가 반환
 export async function POST(request: NextRequest) {
     try {
         const data: UsersType = await request.json();
@@ -42,6 +44,15 @@ export async function POST(request: NextRequest) {
         const date = moment().format('YYYY-MM-DD HH:mm:ss');
         console.log(`moment date => ${date}`);
 
+        const isChecked: boolean = await Users.findOne({ email: data.email}).exec();
+        if (isChecked !== null) {
+            return NextResponse.json({ 
+                error: "이미 존재하는 계정입니다."
+            }, { 
+                status: 400 
+            });
+        };
+
         const userInfo = new Users({
             name: data.name,
             email: data.email,
@@ -58,13 +69,18 @@ export async function POST(request: NextRequest) {
         });
         console.log(`--- User Info saved: ${JSON.stringify(savedUser)}`);
 
-        return NextResponse.json(
-            { messeage: "Signup created successfully" },
-            { status: 201}
-        );
+        return NextResponse.json({ 
+            message: "회원가입 성공"
+        }, { 
+            status: 200 
+        });
         //return Response.json({ message: "회원가입에 성공했습니다." });
     } catch (error) {
         console.error('회원가입 Error: ', error);
-        return NextResponse.json({ message: '회원가입에 실패했습니다.'});
+        return NextResponse.json({ 
+            error: "회원가입에 실패하였습니다."
+        }, { 
+            status: 400 
+        });
     }
 }
