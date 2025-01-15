@@ -2,8 +2,8 @@
 
 import { showToast } from "@/app/components/util/toastUtils";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
-import { toast } from 'react-toastify';
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -132,7 +132,7 @@ function Signup() {
                 } else {
                     erros.password = '';
                     isPasswordValid = true;
-                    console.log(`비밀번호 체크 정상, isValid => ${isValid}, length => ${formData.password.length}`);
+                 //   console.log(`비밀번호 체크 정상, isValid => ${isValid}, length => ${formData.password.length}`);
                 }
                 
                 break;
@@ -140,12 +140,13 @@ function Signup() {
         const result = isNameValid && isEmailValid && isPasswordValid;
         if (!result) setErrorMsgs(erros);
         
-        console.log(`@@@ validateCheck => result: ${result}, isNameValid: ${isNameValid}, isEmailValid: ${isEmailValid}, isPasswordValid: ${isPasswordValid}`);
+     //   console.log(`@@@ validateCheck => result: ${result}, isNameValid: ${isNameValid}, isEmailValid: ${isEmailValid}, isPasswordValid: ${isPasswordValid}`);
 
         return result;
     };
 
     const [response, setResponse] = useState('');
+    const router = useRouter();
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -163,20 +164,47 @@ function Signup() {
             });
 
             const resData = await res.json();
-            if (!res.ok) {
-                console.error(`회원가입 error: ${resData.error}`);
-                handleError(resData.error);
-                return;
-            }
+            // if (!res.ok) {
+            //     console.error(`회원가입 error: ${JSON.stringify(resData)}`);
+            //     handleError(resData.error);
+            //     return;
+            // }`fet
+            console.log(`회원가입 resData => ${JSON.stringify(resData)}`);
+            
+            // `signIn` 을 호출하여 세션을 생성하고 인증 완료
+            if (resData.status === 200) {
+                // 회원가입 성공 후 로그인 시도
+                const signInResponse = await signIn("credentials", {
+                    redirect: false,    // 리디력센을 방지하고, 응답을 받을 수 있음
+                    email: formData.email,
+                    password: formData.password
+                }).then(result => {
+                    console.log(`signInResponse Result => ${JSON.stringify(result)}`);
+                    
+                    // 로그인 성공 시 홈으로 이동
+                    if (result?.ok) {
+                         // React 컴포넌트를 직접 사용하여 줄바꿈 처리
+                        const msg = (
+                            <div>
+                                회원가입 성공!
+                                <br />
+                                홈으로 이동합니다.
+                            </div>
+                        );
+                        showToast.success(msg);
+                        router.push('/');
+                    } else {
+                        showToast.error(`로그인 실패 : ${signInResponse}`);
+                    }
+                }) 
 
-            if (resData.error) {
-                handleError(resData.error);
             } else {
-                showToast.success(resData.message);
+                console.log(`회원가입 resData 에러? 111 `);
+                handleError(resData.error);
             }
         } catch (error) {
             console.error(`Network error: ${error}`);
-            handleError(error);
+            handleError(error || '회원가입 실패');
             setResponse(`회원가입에 실패했습니다.`);
         }
     };
@@ -185,9 +213,9 @@ function Signup() {
         if (typeof error === 'string') {
             showToast.error(error);
         } else {
-            showToast.error('알 수 없는 오류가 발생했습니다.');
+            showToast.error(`알 수 없는 오류가 발생했습니다. ${error}`);
         }
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit} method="post">

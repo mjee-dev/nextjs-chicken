@@ -43,12 +43,16 @@ function Login() {
                 password: formData.password,
                 callbackUrl: "/",
             }).then((result) => {
+                //alert(JSON.stringify(result));
                 console.log(result!.error);
 
+                // {"error":"CredentialsSignin","status":401,"ok":false,"url":null}
                 if (result?.ok) {
                     console.log('인증에 성공하였습니다.');
                     router.push("/");   // 인증 성공 후 리다이렉트. 홈으로 설정
-                } else {
+                } 
+                // {"error":null,"status":200,"ok":true,"url":"http://localhost:3000"}
+                else {
                     showToast.error(result?.error ?? '로그인에 실패했습니다.');
                  //   return;
                 }

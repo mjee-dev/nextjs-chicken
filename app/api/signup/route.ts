@@ -46,11 +46,7 @@ export async function POST(request: NextRequest) {
 
         const isChecked: boolean = await Users.findOne({ email: data.email}).exec();
         if (isChecked !== null) {
-            return NextResponse.json({ 
-                error: "이미 존재하는 계정입니다."
-            }, { 
-                status: 400 
-            });
+            return NextResponse.json({ error: "이미 존재하는 계정입니다.", status: 400 });
         };
 
         const userInfo = new Users({
@@ -69,18 +65,10 @@ export async function POST(request: NextRequest) {
         });
         console.log(`--- User Info saved: ${JSON.stringify(savedUser)}`);
 
-        return NextResponse.json({ 
-            message: "회원가입 성공"
-        }, { 
-            status: 200 
-        });
+        return NextResponse.json({ message: "회원가입 성공", status: 200 });
         //return Response.json({ message: "회원가입에 성공했습니다." });
     } catch (error) {
-        console.error('회원가입 Error: ', error);
-        return NextResponse.json({ 
-            error: "회원가입에 실패하였습니다."
-        }, { 
-            status: 400 
-        });
+        console.error(`회원가입 Error: ${error}`);
+        return NextResponse.json({ error: '회원가입에 실패하였습니다.',  status: 400 });
     }
 }

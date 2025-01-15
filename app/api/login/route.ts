@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       return Response.json({
         message: "계정이 존재하지 않습니다.",
         result: ""
-      })
+      });
     }
 
     const isMatched: boolean = await bcrypt.compare(inputPassword, userInfo.password);
