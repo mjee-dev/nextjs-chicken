@@ -44,7 +44,7 @@ function Header () {
 
     // 관리자 메뉴 표시
     if (session && session.user?.name === 'admin') {
-        navigation.push({ name: '스토어 등록', link: '/admin/stores/create', current: pathName === '/admin/stores/create'? true : false });
+        navigation.push({ name: '스토어 목록', link: '/admin/stores/list', current: pathName === '/admin/stores/list'? true : false });
     }
 
     // 다크 테마

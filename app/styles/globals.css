@@ -65,7 +65,7 @@ main {
   align-items: center;  /* 가운데 정렬 */
 }
 footer {
-  position: fixed;
+  /* position: fixed; */
   bottom: 0;
   left: 0;
   width: 100%;

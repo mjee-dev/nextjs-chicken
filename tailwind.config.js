@@ -13,4 +13,9 @@ module.exports = {
   plugins: [
     daisyui
   ],
+  daisyui: {
+    themes: [
+      'bumblebee'
+    ]
+  }
 }

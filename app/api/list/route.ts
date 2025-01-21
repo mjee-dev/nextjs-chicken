@@ -40,13 +40,6 @@ import { NextResponse } from "next/server";
 
     if (!dbName || !collectionName) {
         return NextResponse.json(
-            { success: false, error: "Missing required query parameters" },
-            { status: 400 }
-        );
-    }
-
-    if (!dbName || !collectionName) {
-        return NextResponse.json(
             { error: `Missing query parameters` },
             { status: 400});
     } 
@@ -55,9 +48,29 @@ import { NextResponse } from "next/server";
         const db = await connectToDatabase(dbName);
         const collection = db.collection(collectionName as string);
 
-        // 데이터 조회 예제
-        const data = await collection.find({}).toArray();    //.find({}).limit(10).
-        return NextResponse.json({ success: true, data }, { status : 200 });
+        const url = new URL(request.url);
+        const page = parseInt(url.searchParams.get('page') || '1', 10);     // 기본값 1.  10진수로 변환
+        const limit = parseInt(url.searchParams.get('limit') || '5', 10);
+
+        const skip = (page - 1) * limit;    // `skip`: MongoDB에서 건너뛸 문서 수
+
+        // 데이터 조회
+        const data = await collection.find({}).skip(skip).limit(limit).toArray();    //.find({}).limit(10).
+        const total = await collection.countDocuments();    // `countDocuments`: 컬렉션의 총 문서 수 반환
+        const totalPages = Math.ceil(total / limit);    // 총 문서 수를 `limit`으로 나누어서 페이지 수 계산
+
+        console.log(`total => ${total}, totalPages => ${totalPages}, skip => ${skip}, limit => ${limit}`);
+
+        return NextResponse.json({
+            success: true,
+            data,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages,
+            }
+        }, { status : 200 });
 
     } catch (error) {
         console.error(`Error => ${error}`);

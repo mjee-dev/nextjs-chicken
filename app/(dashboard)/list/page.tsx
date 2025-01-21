@@ -1,45 +1,100 @@
+'use client';
+
 import { BoardType } from "@/app/api/models/list";
 import Link from "next/link";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 
- async function fetchBoardList():Promise<BoardType[]> {
-    console.log(`NEXT_PUBLIC_BASE_URL: ${process.env.NEXT_PUBLIC_BASE_URL}`);
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/list`,
-        { cache : "no-store"}   //최신 데이터 가져오기, 필요에 따라 "force-cache"로 변경
-    );
+const PostList = () => {
+    const [posts, setPosts] = useState<BoardType[]>([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
-    if (!response.ok) {
-        throw new Error("Failed to fetch data from the server");
-    }
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/list?page=${page}&limit=5`
+            );
+            const result = await response.json();
 
-    const res = await response.json();
-    console.log(`## 게시판 Response => ${JSON.stringify(res)}`);
+            if (result.success) {
+                setPosts(result.data);      // 게시글 데이터를 상태에 저장
+                setTotalPages(result.pagination.totalPages);
+            } else {
+                console.error(`Store List Error => ${JSON.stringify(result.error)}`);
+            }
+        };
 
-    return res.data;
-}
+        fetchPosts();
+    }, [page]);
 
-export default async function List() {
-    let boardList: BoardType[] = [];
-    
-    try {
-        boardList = await fetchBoardList();
-    } catch (error) {
-        console.error(`Error fetching board list => ${error}`);
-        return <div>Error loading the list. Please try again later.</div>;
-    }
+    const handleNext = () => {
+        if (page < totalPages) {
+            setPage(page + 1);
+        }
+    };
 
-    if (!boardList.length) {
-        return <div>데이터가 없습니다.</div>;
+    const handlePrev = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
+
+    const handlePageChange = (newPage: number) => {
+        setPage(newPage);
     }
 
     return (
-        <div className="card bg-base-100 w-96 shadow-xl">
+        <div className="shadow-xl card bg-base-100 w-96">
             <Link href='/write'>
                 <button className="btn" >새 글 작성</button>
             </Link>
+
+            {/* 페이징 */}
+            <div className="join">
+                <button className="join-item btn" onClick={handlePrev} disabled={page === 1}>«</button>
+
+                {/* <input 
+                    className="join-item btn btn-square"
+                    type="radio"
+                    name="options"
+                    aria-label={page.toString()}
+                    defaultChecked />
+                <input className="join-item btn btn-square" type="radio" name="options" aria-label="2" />
+                <button className="join-item btn" onClick={handleNext} disabled={page === totalPages}>»</button> */}
+
+                {/* 페이지 번호 버튼 생성 */}
+                
+                {Array.from({ length: totalPages }).map((_, index) => {
+                    const pageNumber = index + 1; // 페이지 번호는 1부터 시작
+                    
+                    return (
+                    <input
+                        key={pageNumber}
+                        className="join-item btn btn-square"
+                        type="radio"
+                        name="options"
+                        aria-label={pageNumber.toString()}  // 페이지 번호를 aria-label로 설정
+                        defaultChecked={page === pageNumber} // 현재 페이지에 맞는 버튼만 checked
+                        onChange={() => handlePageChange(pageNumber)} // 페이지 변경 핸들러
+                    />
+                    );
+                })}
+
+                <button className="join-item btn" onClick={handleNext} disabled={page === totalPages}>»</button>
+            </div>
+
+            <div>
+                <button onClick={handlePrev} disabled={page === 1}>
+                    ⏪
+                </button>
+                <span>{`Page ${page} of ${totalPages}`}</span>
+                <button onClick={handleNext} disabled={page === totalPages}>
+                    ⏩
+                </button>
+            </div>
             
-            {boardList.map((item) => (
+            {posts.map((item) => (
                 <div className="card-body" key={item._id?.toString()}>
                     <Link href={`/list/${item._id?.toString()}`}>
                         <ul>
@@ -52,13 +107,17 @@ export default async function List() {
                             {/* 날짜 포맷팅이 필요하다면 주석 해제 */}
                             <li>
                                 <p>
-                                    {format(new Date(item.createdAt), "yyyy-MM-dd HH:mm")}
+                                    <small>{format(new Date(item.createdAt), "yyyy-MM-dd HH:mm")}</small>
                                 </p>
                             </li>
                         </ul>
                     </Link>
                 </div>
             ))}
+            
+            
         </div>
     );
-}
+};
+
+export default PostList;

@@ -3,6 +3,7 @@ import { InferSchemaType, model, models, Schema } from "mongoose";
 const collectionName = process.env.COLLECTION_STORES || "stores";
 
 const StoresSchema = new Schema({
+    _id: { type: Schema.Types.ObjectId, required: true },
     name: { type: String, required: true },
     location: {
         address: { type: String, required: true },
