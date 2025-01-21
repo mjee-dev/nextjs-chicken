@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import ChangeLocale from "./ChangeLocales";
 import { useSession } from "next-auth/react";
 import UserGreeting from "./UserGreeting";
+import SearchBar from "./SearchBar";
 
 const user = {
     name: 'Tom Cook',
@@ -32,12 +33,19 @@ function Header () {
     const pathName = usePathname();
     const navigation = [
         { name: '홈', link: '/', current: pathName === '/' ? true : false },
-        { name: '로그인', link: '/login', current: pathName === '/login' ? true : false },
         { name: '게시판', link: '/list', current: pathName.includes('/list') ? true : false },
         { name: '지도', link: '/map', current: pathName === '/map' ? true : false },
         { name: '내 정보', link: '/myInfo/:userId', current: pathName.includes('/myInfo') ? true : false },
         { name: '회원가입', link: '/signup', current: pathName === '/signup'? true : false },
     ];
+
+    // 세션 가져오기
+    const { data : session, status } = useSession();
+
+    // 관리자 메뉴 표시
+    if (session && session.user?.name === 'admin') {
+        navigation.push({ name: '스토어 등록', link: '/admin/stores/create', current: pathName === '/admin/stores/create'? true : false });
+    }
 
     // 다크 테마
     const [theme, setTheme] = useState('light');
@@ -54,8 +62,8 @@ function Header () {
             /* 헤더 메뉴 */
             <header className="shadow">
                 <Disclosure as="nav" className="backg-white">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="flex h-16 items-center justify-between">
+                    <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <div className="flex items-center justify-between h-16">
                             <div className="flex items-center">
                                 <div className="shrink-0">
                                     <Image
@@ -67,7 +75,7 @@ function Header () {
                                     />
                                 </div>
                                 <div className="hidden md:block">
-                                    <div className="ml-10 flex items-baseline space-x-4">
+                                    <div className="flex items-baseline ml-10 space-x-4">
                                         <ul>
                                             {navigation.map((item) => (
                                                 <Link 
@@ -77,6 +85,7 @@ function Header () {
                                                     className={classNames(
                                                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                         'rounded-md px-3 py-2 text-l font-medium',
+                                                        item.link.includes('admin') ? 'text-red-500' : 'text-gray-300',
                                                     )}
                                                 >{item.name}
                                                 </Link>   
@@ -86,8 +95,8 @@ function Header () {
                                 </div>
                             </div>
                             <div className="hidden md:block">
-                                <div className="ml-6 flex items-center md:ml-6">
-                                    {/* <button data-tooltip-target="default-sidebar-example-toggle-dark-mode-tooltip" type="button" data-toggle-dark="dark" className="flex items-center w-9 h-9 justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-yellow-400 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                <div className="flex items-center ml-6 md:ml-6">
+                                    {/* <button data-tooltip-target="default-sidebar-example-toggle-dark-mode-tooltip" type="button" data-toggle-dark="dark" className="flex items-center justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg w-9 h-9 toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-yellow-400 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                         <span className="absolute -inset-1.5"></span>
                                         <svg data-toggle-icon="moon" className="w-3.5 h-3.5 hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                                             <path d="M17.8 13.75a1 1 0 0 0-.859-.5A7.488 7.488 0 0 1 10.52 2a1 1 0 0 0 0-.969A1.035 1.035 0 0 0 9.687.5h-.113a9.5 9.5 0 1 0 8.222 14.247 1 1 0 0 0 .004-.997Z"></path>
@@ -100,7 +109,7 @@ function Header () {
                                     <ChangeLocale />
 
                                     {/* Dark 모드 아이콘 */}
-                                    <label className="flex cursor-pointer gap-2 px-4">
+                                    <label className="flex gap-2 px-4 cursor-pointer">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="20"
@@ -133,7 +142,7 @@ function Header () {
                                     {/* 알림 아이콘 */}
                                     <button
                                         type="button"
-                                        className="relative rounded-full bg-yellow-400 p-1 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                        className="relative p-1 text-gray-400 bg-yellow-400 rounded-full hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                     >
                                         <span className="absolute -inset-1.5"></span>
                                         <span className="sr-only">View notification</span>
@@ -144,10 +153,10 @@ function Header () {
                                     <UserGreeting />
                                     <Menu as="div" className="relative ml-3">
                                         <div>
-                                            <MenuButton className="relative flex max-w-xs items-center rounded-full bg-yellow-400 text-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                            <MenuButton className="relative flex items-center max-w-xs bg-yellow-400 rounded-full text-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                 <span className="absolute -inset-1.5"></span>
                                                 <span className="sr-only">Open user menu</span>
-                                                <Image alt="" src={user.imageUrl} className="size-8 rounded-full" width={32} height={32}/>
+                                                <Image alt="" src={user.imageUrl} className="rounded-full size-8" width={32} height={32}/>
                                             </MenuButton>
                                         </div>
                                         <MenuItems
@@ -168,10 +177,9 @@ function Header () {
                                     </Menu>
                                 </div>
                             </div>
-                            <div className="-mr-2 flex md:hidden">
+                            <div className="flex -mr-2 md:hidden">
                                 {/* 모바일 메뉴 button */}
-                                <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-yellow-400 p-2 text-black hover:bg-gray-700 hover:text-white 
-                                focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <DisclosureButton className="relative inline-flex items-center justify-center p-2 text-black bg-yellow-400 rounded-md group hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                     <span className="absolute -inset-0.5"></span>
                                     <span className="sr-only">Open main menu</span>
                                     <Bars3Icon aria-hidden="true" className="block size-6 group-data-[open]:hidden"></Bars3Icon>
@@ -183,7 +191,7 @@ function Header () {
 
                     <DisclosurePanel className="md:hidden">
                         {/* 모바일 메뉴 영역 */}
-                        <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                             
                             <DisclosureButton>
                                 <ul>
@@ -207,18 +215,17 @@ function Header () {
                         </div>
 
                         {/* 모바일 프로필, 알림 아이콘 */}
-                        <div className="border-t border-gray-700 pb-3 pt-4">
+                        <div className="pt-4 pb-3 border-t border-gray-700">
                             <div className="flex items-center px-5">
                                 <div className="shrink-0">
-                                    <Image alt="" src={user.imageUrl} className="size-10 rounded-full" width={40} height={40}/>
+                                    <Image alt="" src={user.imageUrl} className="rounded-full size-10" width={40} height={40}/>
                                 </div>
                                 <div className="ml-3">
-                                    <div className="text-base/5 font-medium text-white">{user.name}</div>
-                                    <div className="text-md font-medium text-gray-400">{user.email}</div>
+                                    <div className="font-medium text-white text-base/5">{user.name}</div>
+                                    <div className="font-medium text-gray-400 text-md">{user.email}</div>
                                 </div>
                                 {/* 알림 아이콘  */}
-                                <button type="button" className="relative ml-auto shrink-0 rounded-full bg-yellow-400 p-1 text-gray-400 hover:text-white
-                                focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <button type="button" className="relative p-1 ml-auto text-gray-400 bg-yellow-400 rounded-full shrink-0 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                     <span className="absolute -inset-1.5" />
                                     <span className="sr-only">View notifications</span>
                                     <BellIcon aria-hidden="true" className="size-6" />
@@ -227,13 +234,13 @@ function Header () {
                         </div>
 
                         {/* 모바일 프로필 메뉴 dropdown */}
-                        <div className="mt-3 space-y-1 px-2">
+                        <div className="px-2 mt-3 space-y-1">
                             {userNavigation.map((item) => (
                                 <DisclosureButton
                                 key={item.name}
                                 as="a"
                                 href={item.href}
-                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                                className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:bg-gray-700 hover:text-white"
                                 >
                                     {item.name}
                                 </DisclosureButton>
@@ -244,26 +251,7 @@ function Header () {
                 {/* 헤더 메뉴 끝 */}
 
                 {/* 헤더 contents */}
-                <div className="bg-white" /* style={{border: '2px solid red'}} */>
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        <h1 className="text-xs font-bold tracking-tight text-gray-900">header</h1>
-                        
-                        {/* 검색 창 */}
-                        <label className="input input-bordered flex items-center gap-2">
-                            <input type="text" className="grow" placeholder="Search" />
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 16 16"
-                                fill="currentColor"
-                                className="h-4 w-4 opacity-70">
-                                <path
-                                fillRule="evenodd"
-                                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                                clipRule="evenodd" />
-                            </svg>
-                        </label>
-                    </div>
-                </div>
+                <SearchBar />
                 {/* 헤더 contents 끝 */}
             </header>
     );
