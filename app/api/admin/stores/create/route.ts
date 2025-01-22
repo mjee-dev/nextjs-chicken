@@ -1,5 +1,6 @@
 import { Stores } from "@/app/api/models/store";
 import { connectToDatabase } from "@/app/lib/mongodb";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
         console.log(`moment date => ${date}`);
 
         const newStroe = new Stores({
+            _id: new mongoose.Types.ObjectId(), // 수동으로 _id 설정
             name,
             location: {
                 address,

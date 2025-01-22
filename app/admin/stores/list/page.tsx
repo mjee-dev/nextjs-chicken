@@ -1,35 +1,49 @@
+'use client';
+
 import { StoresType } from "@/app/api/models/store";
 import Link from "next/link";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 
-async function fetchStoreList():Promise<StoresType[]> {
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/stores/list`,
-        { cache: "no-store"}
-    );
+const GetList = () => {
+    const [stores, setStores] = useState<StoresType[]>([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const limit = 3;
 
-    if (!response.ok) {
-        throw new Error("Failed to fetch data from the server");
-    }
+    useEffect(() => {
+        const fetchStores = async () => {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/stores/list?page=${page}&limit=${limit}`
+            );
+            const result = await response.json();
 
-    const res = await response.json();
-    console.log(`Stores 목록 Response => ${JSON.stringify(res)}`);
+            if (result.success) {
+                setStores(result.data);
+                setTotalPages(result.pagination.totalPages);
+            } else {
+                console.error(`스토어 List Error => ${JSON.stringify(result.error)}`);
+            }
+        };
 
-    return res.data;
-}
+        fetchStores();
+    }, [page]);
 
-export default async function Stores() {
-    let storeList: StoresType[] = [];
+    const handleNext = () => {
+        if (page < totalPages) {
+            setPage(page + 1);
+        }
+    };
 
-    try {
-        storeList = await fetchStoreList();
-    } catch (error) {
-        console.error(`Error fetching Store List => ${error}`);
-        return <div>Error loading the list. Please try again later.</div>
-    }
+    const handlePrev = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
 
-    if (!storeList.length) {
-        return <div>데이터가 없습니다.</div>;
+
+    const handlePageChange = (newPage: number) => {
+        setPage(newPage);
     }
 
     return (
@@ -37,8 +51,33 @@ export default async function Stores() {
             <Link href='/admin/stores/create'>
                 <button className="btn">Store 등록</button>
             </Link>
+
+            {/* 페이징 */}
+            <div className="join">
+                <button className="join-item btn" onClick={handlePrev} disabled={page === 1}>«</button>
+
+                {/* 페이지 번호 버튼 생성 */}
+                
+                {Array.from({ length: totalPages }).map((_, index) => {
+                    const pageNumber = index + 1; // 페이지 번호는 1부터 시작
+                    
+                    return (
+                    <input
+                        key={pageNumber}
+                        className="join-item btn btn-square"
+                        type="radio"
+                        name="options"
+                        aria-label={pageNumber.toString()}  // 페이지 번호를 aria-label로 설정
+                        defaultChecked={page === pageNumber} // 현재 페이지에 맞는 버튼만 checked
+                        onChange={() => handlePageChange(pageNumber)} // 페이지 변경 핸들러
+                    />
+                    );
+                })}
+
+                <button className="join-item btn" onClick={handleNext} disabled={page === totalPages}>»</button>
+            </div>
             
-            {storeList.map((item) => (
+            {stores.map((item) => ( 
                 <div className="card-body" key={item._id?.toString()}>
                     <Link href={`/list/${item._id?.toString()}`}>
                         <ul>
@@ -61,3 +100,5 @@ export default async function Stores() {
         </div>
     );
 }
+
+export default GetList;

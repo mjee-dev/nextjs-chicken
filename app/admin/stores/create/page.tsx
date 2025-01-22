@@ -1,11 +1,23 @@
 'use client';
 
+import { inputTel } from "@/app/components/util/commonUtils";
 import { showToast } from "@/app/components/util/toastUtils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Create() {
-    const [formData, setFormData] = useState({
+    type FomData = {
+        name: string;
+        address: string;
+        lat: number;
+        lng: number;
+        tel: string;
+        startTime: number;
+        endTime: number;
+        viewCount: number;
+    };
+    
+    const [formData, setFormData] = useState<FomData>({
         name: '',
         address: '',
         lat: 0,
@@ -17,13 +29,18 @@ export default function Create() {
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(`handleChange !!`);
-        
         if (!e.target) return;
-        const { name, value } = e.target;
-        setFormData( {
+        const { name, value, type } = e.target;
+        let newValue = value;
+
+        if (type === 'tel') {
+            newValue = inputTel(value); // `inputTel` 함수가 문자열을 반환한다고 가정
+        }
+        console.log(`handleChange, newValue => ${newValue}`);
+
+        setFormData({
             ...formData,
-            [name]: value
+            [name]: newValue
         });
     };
 
@@ -54,7 +71,8 @@ export default function Create() {
             console.log(`resData => ${JSON.stringify(resData)}`);
             if (resData.status === 200) {
                 showToast.success(`store 등록 성공`);
-                //TODO: store 목록 화면으로 이동
+                // store 목록 화면으로 이동
+                router.push("/admin/stores/list");
             } else {
                 console.error(`store 등록 실패, ${JSON.stringify(resData)}`);
                 showToast.error(`store 등록 실패, ${JSON.stringify(resData)}`);
@@ -108,11 +126,12 @@ export default function Create() {
                 <label>
                     전화번호
                     <input
-                        type="text"
+                        type="tel"
                         className="w-full max-w-xs input input-bordered input-md"
                         name="tel"
                         value={formData.tel}
-                        onChange={handleChange} />
+                        onChange={handleChange} 
+                        maxLength={13} />
                 </label>
                 <label>
                     영업 시작 시간
@@ -121,7 +140,8 @@ export default function Create() {
                         className="w-full max-w-xs input input-bordered input-md"
                         name="startTime"
                         value={formData.startTime}
-                        onChange={handleChange} />
+                        onChange={handleChange}
+                        maxLength={4} />
 
                     영업 종료 시간
                     <input
@@ -129,7 +149,8 @@ export default function Create() {
                         className="w-full max-w-xs input input-bordered input-md"
                         name="endTime"
                         value={formData.endTime}
-                        onChange={handleChange} />
+                        onChange={handleChange}
+                        maxLength={4} />
                 </label>
                 <button type="submit" className="btn">등록</button>
             </div>

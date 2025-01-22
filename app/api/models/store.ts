@@ -27,6 +27,6 @@ const StoresSchema = new Schema({
 type StoresType = InferSchemaType<typeof StoresSchema>;
 
 // 기존 모델이 존재하면 사용하고 없으면 생성
-export const Stores = models.Stores || model<StoresType>("Stores", StoresSchema);
+export const Stores = models.Stores || model("Stores", StoresSchema);
 export type { StoresType };
      
