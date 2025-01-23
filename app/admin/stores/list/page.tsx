@@ -79,7 +79,7 @@ const GetList = () => {
             
             {stores.map((item) => ( 
                 <div className="card-body" key={item._id?.toString()}>
-                    <Link href={`/list/${item._id?.toString()}`}>
+                    <Link href={`/admin/stores/list/${item._id?.toString()}`}>
                         <ul>
                             <li>
                                 <h2 className="card-title">{item.name}</h2> key: {item._id?.toString()}
