@@ -1,4 +1,5 @@
 import { StoresType } from "@/app/api/models/store";
+import BasicMap from "@/app/map/BasicMap";
 import NotFound from "@/app/not-found";
 import { format } from "date-fns";
 
@@ -23,7 +24,7 @@ export default async function StoreDetail({ params }: { params : {id : string}})
     }
 
     return (
-        <div className="shadow-xl card bg-base-100 w-96">
+        <div className="w-full shadow-xl card bg-base-100">
             <div className="card-body">
                 <ul>
                     <li>
@@ -39,15 +40,15 @@ export default async function StoreDetail({ params }: { params : {id : string}})
                     </li>
                     <li>
                         <p>
-                            <span>🔜 {storeDetail.operateTime[0]}</span> 
+                            <span>🔜 {storeDetail.operateTime[0]}</span>
                             <span>🔚 {storeDetail.operateTime[1]}</span>
                         </p>
                     </li>
                     <li>
                         <p>
-                            <span>🗺 지도 영역</span>
-                            {storeDetail.location?.coordinates[0]}, {storeDetail.location?.coordinates[1]}
+                            <span>🗺 지도 영역 {storeDetail.location?.coordinates[0]} {storeDetail.location?.coordinates[1]}</span>
                         </p>
+                        <BasicMap lat={storeDetail.location?.coordinates[0]} lng={storeDetail.location?.coordinates[1]} />
                     </li>
                     <li>
                         <p>

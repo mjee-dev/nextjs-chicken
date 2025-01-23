@@ -1,9 +1,27 @@
 'use client';
 
-import { Map, MapMarker } from "react-kakao-maps-sdk"
+import { MapPinIcon } from "@heroicons/react/24/outline";
+import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk"
 import { useKakaoLoader as useKakaoLoaderOrigin } from "react-kakao-maps-sdk"
 
-export default function BasicMap() {
+interface BasicMapProps {
+  lat?: number;
+  lng?: number;
+}
+
+const BasicMap: React.FC<BasicMapProps> = ({ lat, lng }) => {
+  console.log(`🟡🟡 BasicMap lat: ${lat}, lng: ${lng}`);
+  if (!lat || !lng) {
+    lat = 33.5563;
+    lng = 126.79581 ;
+  };
+
+  const position: { lat:number, lng: number }= {
+    lat: Number(lat),
+    lng: Number(lng)
+  };
+
+  console.log(`🗺 lat: ${lat}, lng: ${lng}`);
 
   const [isLoaded, error] = useKakaoLoaderOrigin({
     appkey: process.env.NEXT_PUBLIC_KAKAOMAP_KEY!,
@@ -28,12 +46,25 @@ export default function BasicMap() {
       //     level={3}
       // />
       <Map
-          center={{ lat: 33.5563, lng: 126.79581 }}
+          center={ position }
           style={{ width: "100%", height: "500px", borderRadius: '5px' }}
       >
-      <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
-        <div style={{color:"#000"}}>Hello World!</div>
-      </MapMarker>
+      <CustomOverlayMap position={ position }>
+        <MapMarker
+            position={position}
+            image={{
+              src: '/icons/gps_13709821.png',
+              size: {
+                width: 64,
+                height: 68
+              },
+
+            }}
+        >
+        </MapMarker>
+      </CustomOverlayMap>
     </Map>
   )
-}
+};
+
+export default BasicMap;
