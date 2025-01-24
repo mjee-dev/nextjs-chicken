@@ -253,3 +253,5 @@ app
 📄 Next.js 13 버전 이상인 app-router 방식에서는 `<script>` 태그 이용 보다는 `component` 생성하는 방식 추천 
 ⏩ 페이지별로 카맵을 필요로 하는 경우, 컴포넌트로 구성하여 필요한 곳에만 로드하도록 하면 성능 최적화에도 유리하다.
 (https://nextjs-blog-v2-amber.vercel.app/blog/FrontEnd/library/kakao-map)
+
+🎃 아이콘 Lucide 라이브러리사용 (https://lucide.dev/icons/) 지도이미지 <a href="https://kr.freepik.com/search">Sicon 제작 아이콘</a>
