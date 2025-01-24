@@ -27,36 +27,28 @@ export default async function StoreDetail({ params }: { params : {id : string}})
         <div className="w-full shadow-xl card bg-base-100">
             <div className="card-body">
                 <ul>
-                    <li>
+                    <li className="py-2">
                         <h2 className="card-title">{storeDetail.name}</h2>
                     </li>
-                    <li><p>📍 {storeDetail.location?.address}</p></li>
-                    <li><p>📱 {storeDetail.tel}</p></li>
-                    <li>
-                        <p>
-                            <span>🔍 조회수 </span>
-                            {storeDetail.viewCount}
-                        </p>
+                    <li className="py-2"><p>📍 {storeDetail.location?.address}</p></li>
+                    <li className="py-2"><p>📱 {storeDetail.tel}</p></li>
+                    <li className="py-2">
+                        <span>🔍 조회수 </span>
+                        {storeDetail.viewCount}
                     </li>
-                    <li>
-                        <p>
-                            <span>🔜 {storeDetail.operateTime[0]}</span>
-                            <span>🔚 {storeDetail.operateTime[1]}</span>
-                        </p>
+                    <li className="py-2">
+                        <span>🔜 {storeDetail.operateTime[0]}</span>
+                        <span>🔚 {storeDetail.operateTime[1]}</span>
                     </li>
-                    <li>
-                        <p>
-                            <span>🗺 지도 영역 {storeDetail.location?.coordinates[0]} {storeDetail.location?.coordinates[1]}</span>
-                        </p>
+                    <li className="py-2">
+                        <span>🗺 지도 영역 {storeDetail.location?.coordinates[0]} {storeDetail.location?.coordinates[1]}</span>
                         <BasicMap lat={storeDetail.location?.coordinates[0]} lng={storeDetail.location?.coordinates[1]} />
                     </li>
-                    <li>
-                        <p>
-                            <span>📆 생성일자</span>
-                            <span>
-                                 {format(new Date(storeDetail.createdAt), "yyyy-MM-dd HH:mm")}
-                            </span>
-                        </p>
+                    <li className="py-2">
+                        <span>📆 생성일자</span>
+                        <span>
+                                {format(new Date(storeDetail.createdAt), "yyyy-MM-dd HH:mm")}
+                        </span>
                     </li>
                 </ul>
 

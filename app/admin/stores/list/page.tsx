@@ -46,8 +46,10 @@ const GetList = () => {
         setPage(newPage);
     }
 
+    const currentTime = Number(format(new Date(), "HHmm"));
+
     return (
-        <div className="shadow-xl card bg-base-100 w-96">
+        <div className="w-full shadow-xl card bg-base-100">
             <Link href='/admin/stores/create'>
                 <button className="btn">Store 등록</button>
             </Link>
@@ -82,16 +84,35 @@ const GetList = () => {
                     <Link href={`/admin/stores/list/${item._id?.toString()}`}>
                         <ul>
                             <li>
-                                <h2 className="card-title">{item.name}</h2> key: {item._id?.toString()}
+                                <h2 className="card-title">{item.name}</h2>
                             </li>
                             <li>
                                 <p>{item.location?.address}</p>
                             </li>
                             {/* 날짜 포맷팅이 필요하다면 주석 해제 */}
                             <li>
-                                <p>
+                            {currentTime >= item.operateTime[0] && currentTime <= item.operateTime[1] 
+                                ? (
+                                    <span className="block" style={{color:'#078b54'}}>영업중</span>
+                                ) : (
+                                    <span className="block"  style={{color:'#EB5757'}}>영업 종료</span>
+                                )
+                            }
+                            <span>
+                                🕑{item.operateTime[0].toString().length === 3 
+                                    ? `0${item.operateTime[0].toString().substring(0, 1)}:${item.operateTime[0].toString().substring(1, 3)}`
+                                    : `${item.operateTime[0].toString().substring(0, 2)}:${item.operateTime[0].toString().substring(2, 4)}`
+                                    }
+                                ~ {item.operateTime[1].toString().length === 3 
+                                    ? `0${item.operateTime[1].toString().substring(0, 1)}:${item.operateTime[1].toString().substring(1, 3)}`
+                                    : `${item.operateTime[1].toString().substring(0, 2)}:${item.operateTime[1].toString().substring(2, 4)}`
+                                    }
+                            </span>
+                            </li>
+                            <li>
+                                <span>
                                     {format(new Date(item.createdAt), "yyyy-MM-dd HH:mm")}
-                                </p>
+                                </span>
                             </li>
                         </ul>
                     </Link>

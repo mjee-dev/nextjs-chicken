@@ -33,7 +33,7 @@ function Header () {
     const pathName = usePathname();
     const navigation = [
         { name: '홈', link: '/', current: pathName === '/' ? true : false },
-        { name: '게시판', link: '/list', current: pathName.includes('/list') ? true : false },
+        { name: '게시판', link: '/list', current: (pathName === '/list' || pathName === '/write') ? true : false },
         { name: '지도', link: '/map', current: pathName === '/map' ? true : false },
         { name: '내 정보', link: '/myInfo/:userId', current: pathName.includes('/myInfo') ? true : false },
         { name: '회원가입', link: '/signup', current: pathName === '/signup'? true : false },

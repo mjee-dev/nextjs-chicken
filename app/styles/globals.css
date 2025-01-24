@@ -79,6 +79,13 @@ footer {
   box-shadow: 0 0 0 3px rgba(255, 119, 119, .3);
 }
 
+.block {
+  background-color: rgba(135,131,120,.15);
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  width: fit-content;
+}
+
 /* 다크모드 */
 :root {   /*:root : 문서의 최상위 요소, 기본 값을 설정 */
   --background-color:white;

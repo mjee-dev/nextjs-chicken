@@ -47,7 +47,7 @@ const BasicMap: React.FC<BasicMapProps> = ({ lat, lng }) => {
       // />
       <Map
           center={ position }
-          style={{ width: "100%", height: "500px", borderRadius: '5px' }}
+          style={{ width: "100%", height: "500px", borderRadius: '10px' }}
       >
       <CustomOverlayMap position={ position }>
         <MapMarker
