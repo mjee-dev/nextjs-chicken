@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
         console.log(`🟠 Connected to databse: ${db.databaseName}🟠`);
 
         // 스키마 구조에 맞게 처리
-        const { name, location, tel, viewCount, operateTime } = storeData;
+        const { name, location, tel, searchCount, operateTime } = storeData;
         const { address, coordinates } = location;
 
         // date 날짜 형식 변경
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
             },
             tel,
             operateTime,
-            viewCount,
+            searchCount,
             createdAt: date,
             updatedAt: null
         });

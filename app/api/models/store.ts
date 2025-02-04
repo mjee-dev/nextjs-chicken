@@ -11,7 +11,7 @@ const StoresSchema = new Schema({
     },
     tel: { type: String, required: true },
     operateTime: { type: [Number], require: true }, // [900, 2100] 9:00 AM - 9.00 PM
-    viewCount: { type: Number, required: true, default: 0 },
+    searchCount: { type: Number, required: true, default: 0 },
     createdAt: {
         type: String,
         default: Date.now

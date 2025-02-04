@@ -14,7 +14,7 @@ export default function Create() {
         tel: string;
         startTime: number;
         endTime: number;
-        viewCount: number;
+        searchCount: number;
     };
     
     const [formData, setFormData] = useState<FomData>({
@@ -25,7 +25,7 @@ export default function Create() {
         tel: '',
         startTime: 0,
         endTime: 0,
-        viewCount: 0
+        searchCount: 0
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

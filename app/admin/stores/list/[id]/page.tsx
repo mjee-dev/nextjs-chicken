@@ -87,7 +87,7 @@ export default function StoreDetail({ params }: { params : {id : string}}) {
                     <li className="py-2"><p>📱 {storeDetail.tel}</p></li>
                     <li className="py-2">
                         <span>🔍 조회수 </span>
-                        {storeDetail.viewCount}
+                        {storeDetail.searchCount}
                     </li>
                     <li className="py-2">
                         <span>🔜 {storeDetail.operateTime[0]}</span>

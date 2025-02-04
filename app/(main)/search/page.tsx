@@ -38,7 +38,7 @@ export default function Search() {
                 {results.length > 0 ? (
                     results.map((item) => (
                         <li key={item._id?.toString()} className="p-2 border-b">
-                            <strong>{item.name}</strong> - {item.location?.address} (검색 수: {item.viewCount})
+                            <strong>{item.name}</strong> - {item.location?.address} (검색 수: {item.searchCount})
                         </li>
                     ))
                 ) : (

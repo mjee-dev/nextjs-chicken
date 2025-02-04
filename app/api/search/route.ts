@@ -22,11 +22,27 @@ export async function GET(req: NextRequest) {
                     ],
                 },
             },
-            { $sort: { viewCount: -1} },    // -1: 내림차순, 1:오름차순
+            { $sort: { searchCount: -1} },    // -1: 내림차순, 1:오름차순
             { $limit: 10 }
         ];
         const data = await collection.aggregate(condition).toArray();
+
+        // 검색한 데이터 searchCount++
+        const up = await collection.updateMany({
+            $or: [
+                    { name: { $regex: query, $options: "i"} },
+                    { location: {
+                        address: { $regex: query, $options: "i"} }
+                    }
+                ]
+            },
+            {
+                $inc: { searchCount: 1}
+            }
+        );
+
         console.log(`💥 검색 결과 => ${JSON.stringify(data)}`);
+        console.log(`💥 Up 결과 => ${JSON.stringify(data)}`);
     
         return NextResponse.json({
             success: true,
