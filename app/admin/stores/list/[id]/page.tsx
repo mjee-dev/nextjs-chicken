@@ -69,42 +69,47 @@ export default function StoreDetail({ params }: { params : {id : string}}) {
     
     //const storeDetail = await fetchDetail(id);
 
-    if (loading) { return <p>로딩중 ..</p>;}
+    if (loading) { return <span className="mt-20 loading loading-dots" style={{width: '4.5rem'}}></span>;}
 
     if (!storeDetail) {
         return NotFound();
     }
 
     return (
-        <div className="w-full shadow-xl card bg-base-100">
-            <button className="btn btn-primary w" onClick={() => router.push('/admin/stores/list')}>목록</button>
-            <div className="card-body">
-                <ul>
-                    <li className="py-2">
-                        <h2 className="card-title">{storeDetail.name}</h2>
-                    </li>
-                    <li className="py-2"><p>📍 {storeDetail.location?.address}</p></li>
-                    <li className="py-2"><p>📱 {storeDetail.tel}</p></li>
-                    <li className="py-2">
-                        <span>🔍 조회수 </span>
-                        {storeDetail.searchCount}
-                    </li>
-                    <li className="py-2">
-                        <span>🔜 {storeDetail.operateTime[0]}</span>
-                        <span>🔚 {storeDetail.operateTime[1]}</span>
-                    </li>
-                    <li className="py-2">
-                        <span>🗺 지도 영역 {storeDetail.location?.coordinates[0]} {storeDetail.location?.coordinates[1]}</span>
-                        <BasicMap lat={storeDetail.location?.coordinates[0]} lng={storeDetail.location?.coordinates[1]} />
-                    </li>
-                    <li className="py-2">
-                        <span>📆 생성일자</span>
-                        <span>
-                                {format(new Date(storeDetail.createdAt), "yyyy-MM-dd HH:mm")}
-                        </span>
-                    </li>
-                </ul>
+        <div className="w-full">
+            <div className="mb-4">
+                <button className="w-24 btn btn-primary" onClick={() => router.push('/admin/stores/list')}>목록</button>
+                <button className="w-24 ml-1 btn btn-primary" onClick={() => router.push('/admin/stores/list')}>수정</button>
+            </div>
+            <div className="shadow-xl card bg-base-100">
+                <div className="card-body">
+                    <ul>
+                        <li className="py-2">
+                            <h2 className="card-title">{storeDetail.name}</h2>
+                        </li>
+                        <li className="py-2"><p>📍 {storeDetail.location?.address}</p></li>
+                        <li className="py-2"><p>📱 {storeDetail.tel}</p></li>
+                        <li className="py-2">
+                            <span>🔍 조회수 </span>
+                            {storeDetail.searchCount}
+                        </li>
+                        <li className="py-2">
+                            <span>🔜 {storeDetail.operateTime[0]}</span>
+                            <span>🔚 {storeDetail.operateTime[1]}</span>
+                        </li>
+                        <li className="py-2">
+                            <span>🗺 지도 영역 {storeDetail.location?.coordinates[0]} {storeDetail.location?.coordinates[1]}</span>
+                            <BasicMap lat={storeDetail.location?.coordinates[0]} lng={storeDetail.location?.coordinates[1]} />
+                        </li>
+                        <li className="py-2">
+                            <span>📆 생성일자</span>
+                            <span>
+                                    {format(new Date(storeDetail.createdAt), "yyyy-MM-dd HH:mm")}
+                            </span>
+                        </li>
+                    </ul>
 
+                </div>
             </div>
         </div>
     );

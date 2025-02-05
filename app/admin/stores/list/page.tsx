@@ -10,8 +10,10 @@ const GetList = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const limit = 3;
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        setLoading(true);
         const fetchStores = async () => {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/stores/list?page=${page}&limit=${limit}`
@@ -21,7 +23,9 @@ const GetList = () => {
             if (result.success) {
                 setStores(result.data);
                 setTotalPages(result.pagination.totalPages);
+                setLoading(false);
             } else {
+                // TODO: 에러 UI 처리
                 console.error(`스토어 List Error => ${JSON.stringify(result.error)}`);
             }
         };
@@ -48,11 +52,15 @@ const GetList = () => {
 
     const currentTime = Number(format(new Date(), "HHmm"));
 
+    if (loading) {return <span className="mt-20 loading loading-dots" style={{width: '4.5rem'}}></span>;}
+
     return (
-        <div className="w-full shadow-xl card bg-base-100">
-            <Link href='/admin/stores/create'>
-                <button className="btn">Store 등록</button>
-            </Link>
+        <div className="w-full shadow-xl">
+            <div className="mb-4">
+                <Link href='/admin/stores/create'>
+                    <button className="btn">Store 등록</button>
+                </Link>
+            </div>
 
             {/* 페이징 */}
             <div className="join">

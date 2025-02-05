@@ -7,8 +7,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     return (
         <div>
             <Header />
-                <main className='main mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 wrapper'>
-                    [main-Outlet]
+                <main className='px-4 py-6 mx-auto main max-w-7xl sm:px-6 lg:px-8 wrapper'>
                     {children}
                 </main>
             <Footer />

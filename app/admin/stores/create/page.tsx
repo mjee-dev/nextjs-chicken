@@ -85,75 +85,91 @@ export default function Create() {
     }
 
     return (
-        <form onSubmit={handleSubmit} method="post">
-            <div className="w-80">
-                <label>
-                    가게명
+        <div>
+            <span className="text-2xl font-semibold from-neutral-900">스토어 등록</span>
+            <form onSubmit={handleSubmit} method="post">
+                <div className="w-80">
+                    <label className="label">
+                        <span className="label-text">가게명</span>
+                    </label>
                     <input 
                         type="text"
-                        className="w-full max-w-xs input input-bordered input-md" 
+                        className="w-full input input-bordered" 
                         name="name" 
                         value={formData.name} 
-                        onChange={handleChange} />
-                </label>
-                <label>
-                    주소
+                        onChange={handleChange} 
+                    />
+                    <label className="label">
+                        <span className="label-text">주소</span>
+                    </label>
                     <input 
                         type="text"
-                        className="w-full max-w-xs input input-bordered input-md" 
+                        className="w-full input input-bordered" 
                         name="address"
                         value={formData.address}
-                        onChange={handleChange} />
-                </label>
-                <label>
-                    위도
+                        onChange={handleChange}
+                    />
+                    <label className="label">
+                        <span className="label-text">위도</span>
+                    </label>
                     <input
                         type="text"
-                        className="max-w-xs input input-bordered input-md" 
+                        className="w-full input input-bordered" 
                         name="lat"
                         value={formData.lat} 
-                        onChange={handleChange} />
-                </label><br/>
-                <label>
-                    경도
+                        onChange={handleChange}
+                    />
+                    <label className="label">
+                        <span className="label-text">경도</span>
+                    </label>
                     <input
                         type="text"
-                        className="max-w-xs input input-bordered input-md"
+                        className="w-full input input-bordered"
                         name="lng"
                         value={formData.lng}
-                        onChange={handleChange} />
-                </label><br/>
-                <label>
-                    전화번호
+                        onChange={handleChange} 
+                    />
+                    <label className="label">
+                        <span className="label-text">전화번호</span>
+                    </label>
                     <input
                         type="tel"
-                        className="w-full max-w-xs input input-bordered input-md"
+                        className="w-full input input-bordered"
                         name="tel"
                         value={formData.tel}
                         onChange={handleChange} 
-                        maxLength={13} />
-                </label>
-                <label>
-                    영업 시작 시간
+                        maxLength={13} 
+                    />
+                    <label className="label">
+                        <span className="label-text">영업 시작 시간</span>
+                    </label>
                     <input
                         type="text"
-                        className="w-full max-w-xs input input-bordered input-md"
+                        className="w-full max-w-xs input input-bordered"
                         name="startTime"
                         value={formData.startTime}
                         onChange={handleChange}
-                        maxLength={4} />
-
-                    영업 종료 시간
+                        maxLength={4}
+                    />
+                    <label className="label">
+                        <span className="label-text">영업 종료 시간</span>
+                    </label>
                     <input
                         type="text"
-                        className="w-full max-w-xs input input-bordered input-md"
+                        className="w-full max-w-xs input input-bordered "
                         name="endTime"
                         value={formData.endTime}
                         onChange={handleChange}
-                        maxLength={4} />
-                </label>
-                <button type="submit" className="btn">등록</button>
-            </div>
-        </form>
+                        maxLength={4} 
+                    />
+
+                    <input type="file" className="w-full max-w-xs file-input" />
+                    
+                    <div className="mt-6 form-control">
+                        <button type="submit" className="btn btn-primary">등록</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     );
 }

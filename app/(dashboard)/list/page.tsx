@@ -9,8 +9,10 @@ const PostList = () => {
     const [posts, setPosts] = useState<BoardType[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        setLoading(true);
         const fetchPosts = async () => {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/list?page=${page}&limit=5`
@@ -20,7 +22,9 @@ const PostList = () => {
             if (result.success) {
                 setPosts(result.data);      // 게시글 데이터를 상태에 저장
                 setTotalPages(result.pagination.totalPages);
+                setLoading(false);
             } else {
+                // TODO: 에러 UI 처리
                 console.error(`Store List Error => ${JSON.stringify(result.error)}`);
             }
         };
@@ -44,6 +48,8 @@ const PostList = () => {
         setPage(newPage);
     }
 
+    if (loading) {return <span className="mt-20 loading loading-dots" style={{width: '4.5rem'}}></span>;}
+
     return (
         <div className="shadow-xl card bg-base-100 w-96">
             <Link href='/write'>
@@ -51,7 +57,7 @@ const PostList = () => {
             </Link>
 
             {/* 페이징 */}
-            <div className="join">
+            <div className="mt-3 join">
                 <button className="join-item btn" onClick={handlePrev} disabled={page === 1}>«</button>
 
                 {/* <input 
@@ -84,7 +90,7 @@ const PostList = () => {
                 <button className="join-item btn" onClick={handleNext} disabled={page === totalPages}>»</button>
             </div>
 
-            <div>
+            <div className="mt-3">
                 <button onClick={handlePrev} disabled={page === 1}>
                     ⏪
                 </button>

@@ -28,7 +28,7 @@ const BasicMap: React.FC<BasicMapProps> = ({ lat, lng }) => {
     libraries: ['clusterer', 'drawing', 'services']
   });
 
-  if (isLoaded) return <div>Loading</div>;
+  if (isLoaded) return <span className="mt-20 loading loading-dots" style={{width: '4.5rem'}}></span>;
   if (error) return <div>Error</div>;
 
   return (
