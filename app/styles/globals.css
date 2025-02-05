@@ -15,6 +15,20 @@
   }
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('../fonts/Pretendard-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'WantedSans';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('../fonts/WantedSans-Regular.woff2') format('woff2');
+}
+
 body, html {
   margin: 0;
   padding: 0;

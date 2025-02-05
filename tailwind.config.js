@@ -8,7 +8,11 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      'sans': ['Roboto', 'ui-sans-serif', 'system-ui'],
+      Pretendard: ['Pretendard'],
+      WantedSans: ['WantedSans']
+    }
   },
   plugins: [
     daisyui
