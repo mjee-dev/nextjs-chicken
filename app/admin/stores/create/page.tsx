@@ -85,16 +85,16 @@ export default function Create() {
     }
 
     return (
-        <div>
+        <div className="w-full">
             <span className="text-2xl font-semibold from-neutral-900">스토어 등록</span>
             <form onSubmit={handleSubmit} method="post">
-                <div className="w-80">
+                <div className="w-full mt-2 shadow-xl card-body">
                     <label className="label">
                         <span className="label-text">가게명</span>
                     </label>
                     <input 
                         type="text"
-                        className="w-full input input-bordered" 
+                        className="input input-bordered" 
                         name="name" 
                         value={formData.name} 
                         onChange={handleChange} 
@@ -104,7 +104,7 @@ export default function Create() {
                     </label>
                     <input 
                         type="text"
-                        className="w-full input input-bordered" 
+                        className="input input-bordered" 
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
@@ -114,7 +114,7 @@ export default function Create() {
                     </label>
                     <input
                         type="text"
-                        className="w-full input input-bordered" 
+                        className="input input-bordered" 
                         name="lat"
                         value={formData.lat} 
                         onChange={handleChange}
@@ -124,7 +124,7 @@ export default function Create() {
                     </label>
                     <input
                         type="text"
-                        className="w-full input input-bordered"
+                        className="input input-bordered"
                         name="lng"
                         value={formData.lng}
                         onChange={handleChange} 
@@ -134,7 +134,7 @@ export default function Create() {
                     </label>
                     <input
                         type="tel"
-                        className="w-full input input-bordered"
+                        className="input input-bordered"
                         name="tel"
                         value={formData.tel}
                         onChange={handleChange} 
@@ -145,7 +145,7 @@ export default function Create() {
                     </label>
                     <input
                         type="text"
-                        className="w-full max-w-xs input input-bordered"
+                        className="max-w-xs input input-bordered"
                         name="startTime"
                         value={formData.startTime}
                         onChange={handleChange}
@@ -156,7 +156,7 @@ export default function Create() {
                     </label>
                     <input
                         type="text"
-                        className="w-full max-w-xs input input-bordered "
+                        className="max-w-xs input input-bordered "
                         name="endTime"
                         value={formData.endTime}
                         onChange={handleChange}
