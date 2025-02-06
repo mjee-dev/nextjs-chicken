@@ -40,6 +40,7 @@ function Header () {
     ];
 
     // 세션 가져오기
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { data : session, status } = useSession();
 
     // 관리자 메뉴 표시
@@ -60,7 +61,7 @@ function Header () {
 
     return (
             /* 헤더 메뉴 */
-            <header className="shadow">
+            <header className="text-lg shadow">
                 <Disclosure as="nav" className="backg-white">
                     <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">

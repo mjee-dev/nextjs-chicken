@@ -23,7 +23,7 @@ export default async function ListDetail({ params } : { params : { id : string }
     }
 
     return (
-        <div className="card bg-base-100 w-96 shadow-xl">
+        <div className="shadow-xl card bg-base-100 w-96">
             <div className="card-body">
                 <ul>
                     <li>

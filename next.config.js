@@ -21,6 +21,10 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com', // 여기에 Google 이미지 추가
         pathname: '/a/*',
       },
+      {
+        protocol: 'https',
+        hostname: 'chicken-map.s3.ap-northeast-2.amazonaws.com'   // ✅ S3 버킷 도메인 추가
+      }
     ],
     dangerouslyAllowSVG: true, // SVG 이미지 허용
   },

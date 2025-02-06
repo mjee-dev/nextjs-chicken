@@ -33,7 +33,7 @@ export default function Search() {
 
     return (
         <div className="p-4">
-            <h1 className="text-xl font-bold">"{query}" 검색 결과</h1>
+            <h1 className="text-xl font-bold">&quot; {query} &quot; 검색 결과</h1>
             <ul className="mt-4">
                 {results.length > 0 ? (
                     results.map((item) => (

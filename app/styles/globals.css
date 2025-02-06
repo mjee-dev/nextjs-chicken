@@ -33,7 +33,6 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-size: 1rem;
 }
 
 body {
@@ -108,6 +107,10 @@ footer {
   justify-content: center;
   -webkit-box-align: center;
   align-items: center;
+}
+
+.label-text {
+  font-size: 1.125rem;
 }
 
 /* 다크모드 */

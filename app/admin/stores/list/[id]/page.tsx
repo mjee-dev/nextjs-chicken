@@ -1,6 +1,7 @@
 'use client';
 
 import { StoresType } from "@/app/api/models/store";
+import StoreImage from "@/app/components/image/StoreImage";
 import BasicMap from "@/app/map/BasicMap";
 import NotFound from "@/app/not-found";
 import { format } from "date-fns";
@@ -86,6 +87,9 @@ export default function StoreDetail({ params }: { params : {id : string}}) {
                     <ul>
                         <li className="py-2">
                             <h2 className="card-title">{storeDetail.name}</h2>
+                        </li>
+                        <li>
+                            <StoreImage imageUrl={storeDetail.imageUrl} />
                         </li>
                         <li className="py-2"><p>📍 {storeDetail.location?.address}</p></li>
                         <li className="py-2"><p>📱 {storeDetail.tel}</p></li>

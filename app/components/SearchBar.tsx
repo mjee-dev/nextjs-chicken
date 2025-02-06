@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 
-export default function SearchBar({ setResults }: { setResults: (data: any[]) => void}) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function SearchBar({ setResults }: { setResults?: (data: any[]) => void}) {
     const [query, setQuery] = useState('');
     const router = useRouter();
 
