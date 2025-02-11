@@ -2,7 +2,6 @@
 
 import BasicMap from "@/app/map/BasicMap";
 import { useKakaoLoader as useKakaoLoaderOrigin } from "react-kakao-maps-sdk"
-import { Map } from "react-kakao-maps-sdk"
 
 export default function MapView() {
 

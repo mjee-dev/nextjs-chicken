@@ -78,7 +78,9 @@ export default function StoreDetail({ params }: { params : {id : string}}) {
                             <h2 className="card-title">{storeDetail.name}</h2>
                         </li>
                         <li>
-                            <StoreImage imageUrl={storeDetail.imageUrl} />
+                            {
+                                storeDetail.imageUrl !== "" ? (<StoreImage imageUrl={storeDetail.imageUrl} />) : (<></>)
+                            }
                         </li>
                         <li className="py-2"><p>📍 {storeDetail.location?.address}</p></li>
                         <li className="py-2"><p>📱 {storeDetail.tel}</p></li>

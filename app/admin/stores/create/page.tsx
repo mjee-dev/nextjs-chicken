@@ -3,7 +3,7 @@
 import { inputTel } from "@/app/components/util/commonUtils";
 import { showToast } from "@/app/components/util/toastUtils";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Create() {
     type FormData = {

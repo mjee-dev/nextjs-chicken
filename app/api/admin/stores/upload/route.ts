@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ObjectCannedACL, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 
 const s3 = new S3Client({
@@ -10,7 +10,7 @@ const s3 = new S3Client({
     },
 });
 
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
     // if (request.method === 'POST') {
     //     const contentType = request.headers['Content-type'];
     //     if (contentType && contentType.startsWith('multipart/from-data')) {
