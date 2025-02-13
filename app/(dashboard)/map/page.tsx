@@ -1,7 +1,8 @@
 'use client'
 
+import "@/app/components/util/common";
 import BasicMap from "@/app/map/BasicMap";
-import { useKakaoLoader as useKakaoLoaderOrigin } from "react-kakao-maps-sdk"
+import { useKakaoLoader as useKakaoLoaderOrigin } from "react-kakao-maps-sdk";
 
 export default function MapView() {
 
@@ -12,6 +13,13 @@ const [isLoaded, error] = useKakaoLoaderOrigin({
 
 if (isLoaded) return <div>Loading</div>;
 if (error) return <div>Error</div>;
+
+//TODO: 프로토타입 연습
+const text = 'hello world';
+console.log('capitalize: ' + text.capitalize());
+
+const numbers = [1, 2, 3, 4, 5];
+console.log(`Array sum: ${numbers.sum()}`); // 15
 
 return (
   <BasicMap />
